@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#fd6363</color>
+    <color name="colorAccent">#3ba9ee</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorB3">#333333</color>
+    <color name="colorW">#ffff</color>
+    <color name="me_text_c">#303030</color>
+
+    <color name="category_sort_text_color">#323232</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="chart_point_line_color">#1790dd</color>
+    <color name="chart_hori_line_color">#bababa</color>
+    <color name="chart_shade_color">#aa5f5f5f</color>
+    <color name="chart_vh_text_color">#5f5f5f</color>
+    <color name="chart_waiyuan_color">#261790dd</color>
+
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_marginTop="14dp"
+		android:paddingBottom="10dp"
+		android:paddingLeft="14dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	<TextView
+			android:id="@+id/price"
+			android:textColor="#333333"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="价格" />
+
+	<LinearLayout
+			android:layout_below="@id/price"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="14dp"
+			android:layout_marginTop="3dp"
+			android:orientation="horizontal">
+		<TextView
+				android:id="@+id/price_yuan"
+				android:layout_width="wrap_content"
+				android:layout_height="30.6dp"
+				android:layout_marginRight="10dp"
+				android:gravity="center"
+				android:text="价格区间(元)" />
+		<EditText
+				android:layout_width="72dp"
+				android:layout_height="30.6dp"
+				android:background="@drawable/edittext_shape"
+				android:digits="0123456789"
+				android:gravity="center"
+				android:hint="最低价"
+				android:inputType="number" />
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="---" />
+
+		<EditText
+				android:layout_width="72dp"
+				android:layout_height="30.6dp"
+				android:background="@drawable/edittext_shape"
+				android:digits="0123456789"
+				android:gravity="center"
+				android:hint="最高价"
+				android:inputType="number" />
+	</LinearLayout>
+</LinearLayout>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_text_search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+	<android.support.v7.widget.Toolbar
+			android:id="@+id/search_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="?attr/colorPrimary"
+			android:elevation="1dp"
+			android:minHeight="?attr/actionBarSize"
+	>
+
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+		>
+
+			<com.deepbaytech.deeplibrary.OneKeyClearEditText
+					android:id="@+id/et_search"
+					android:layout_width="0dp"
+					android:layout_height="30dp"
+					android:layout_weight="8.5"
+					android:background="@drawable/search_detail"
+					android:hint="衬衫 男"
+					android:singleLine="true"
+					android:textColor="#999999"
+					android:textColorHint="#bbbbbb"
+					android:textSize="14dp"
+
+			/>
+
+
+			<TextView
+					android:id="@+id/tv_search_back"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1.5"
+					android:gravity="center"
+					android:text="取消"
+					android:textColor="#999999"
+					android:textSize="16dp"
+			/>
+		</LinearLayout>
+
+	</android.support.v7.widget.Toolbar>
+
+	<LinearLayout
+			android:id="@+id/ll_search_text_ware"
+			android:layout_marginTop="?attr/actionBarSize"
+			android:orientation="vertical"
+			android:background="@color/colorW"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+	>
+
+		<RelativeLayout
+				android:visibility="gone"
+				android:id="@+id/rl_search_history"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="15dp"
+		>
+			<ImageView
+					android:id="@+id/iv_search_history"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:src="@mipmap/search_history"
+			/>
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:layout_marginLeft="10dp"
+					android:layout_toRightOf="@id/iv_search_history"
+					android:text="历史搜索"
+					android:textColor="#999999"
+					android:textSize="15dp"
+			/>
+			<ImageView
+					android:id="@+id/iv_del_history"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="15dp"
+					android:src="@mipmap/search_delete_history"
+			/>
+		</RelativeLayout>
+
+		<com.example.lwd18.pictureselecotor.FlowLayout
+				android:id="@+id/fl_history"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+		>
+
+		</com.example.lwd18.pictureselecotor.FlowLayout>
+
+		<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="#e5e5e5"
+		/>
+
+		<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="15dp"
+		>
+			<ImageView
+					android:id="@+id/iv_search_hot"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:src="@mipmap/search_hot"
+			/>
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:layout_marginLeft="10dp"
+					android:layout_toRightOf="@id/iv_search_hot"
+					android:text="热门搜索"
+					android:textColor="#999999"
+					android:textSize="15dp"
+			/>
+
+
+		</RelativeLayout>
+		<com.example.lwd18.pictureselecotor.FlowLayout
+				android:id="@+id/fl_hot"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+		>
+		</com.example.lwd18.pictureselecotor.FlowLayout>
+	</LinearLayout>
+
+
+</RelativeLayout>

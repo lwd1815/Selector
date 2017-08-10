@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AutoTabLayout">
+        <attr name="auto_textSize_base_width" format="boolean"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="OneKeyClearEditText">
+        <attr name="deletecolor" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="LineChartView">
+        <attr name="horizontal_grid_step" format="integer" min="0" />
+        <attr name="vertical_grid_step" format="integer" min="0" />
+        <attr name="horizontal_grid_sublines_count" format="integer" min="0" />
+        <attr name="vertical_grid_sublines_count" format="integer" min="0" />
+        <attr name="vertical_grid" format="boolean" />
+        <attr name="vertical_grid_sublines" format="boolean" />
+        <attr name="horizontal_grid" format="boolean" />
+        <attr name="horizontal_grid_sublines" format="boolean" />
+        <attr name="horizontal_grid_color" format="color" />
+        <attr name="vertical_grid_color" format="color" />
+        <attr name="horizontal_grid_sublines_color" format="color" />
+        <attr name="vertical_grid_sublines_color" format="color" />
+        <attr name="horizontal_grid_thikness" format="dimension" />
+        <attr name="vertical_grid_thikness" format="dimension" />
+        <attr name="horizontal_grid_sublines_thikness" format="dimension" />
+        <attr name="vertical_grid_sublines_thikness" format="dimension" />
+        <attr name="horizontal_values" format="boolean" />
+        <attr name="vertical_values" format="boolean" />
+        <attr name="horizontal_values_color" format="color" />
+        <attr name="vertical_values_color" format="color" />
+        <attr name="horizontal_values_size" format="dimension" />
+        <attr name="vertical_values_size" format="dimension" />
+    </declare-styleable>
+</resources>

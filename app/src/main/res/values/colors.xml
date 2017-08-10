@@ -1,6 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#3F51B5</color>
-	<color name="colorPrimaryDark">#303F9F</color>
-	<color name="colorAccent">#FF4081</color>
+	<color name="white40">#40FFFFFF</color>
+	<color name="colorPrimary">#ffffff</color>
+	<color name="colorPrimaryDark">#fd6363</color>
+	<color name="colorAccent">#c1c1c1</color>
+	<color name="colorBlack">#000000</color>
+	<color name="colorB3">#333333</color>
+	<color name="colorW">#ffff</color>
+	<color name="me_text_c">#303030</color>
+	<color name="rv_message">#22fd6363</color>
+	<color name="edit_color">#999999</color>
+
+	<color name="main_tab_normal_color">#444444</color>
+	<color name="main_tab_select_color">#fd6363</color>
+	<color name="color_c51">#f94c51</color>
+	<color name="onekeydeleteET">#999999</color>
+	<color name="color_f6">#f6f6f6</color>
+	<color name="bg_ware_from">#bf0000</color>
+	<color name="slide_btn_bg">#ff3a31</color>
+	<color name="pdd_text_grey_light">#ff9c9c9c</color>
+	<color name="pdd_text_black">#ff151516</color>
+	<color name="pdd_main_color">#ffe02e24</color>
+	<color name="deep_white_color">#ffffff</color>
+	<color name="deep_normal_color">#444444</color>
+	<color name="deep_main_color">#fd6363</color>
+	<color name="deep_9_color">#999999</color>
+	<color name="deep_f_bg">#f3f3f3</color>
+	<color name="deep_d_color">#d0d0d0</color>
+	<color name="deep_3_color">#333333</color>
+	<color name="deep_5_color">#555555</color>
+	<color name="deep_6_color">#666666</color>
+	<color name="deep_7_color">#777777</color>
+	<color name="deep_8_color">#888888</color>
+	<color name="deep_2_color">#222222</color>
+	<color name="deep_1_color">#111111</color>
+	<color name="deep_normal_bg">#ececec</color>
+	<color name="deep_post_ware_bg">#f9f9f9</color>
+	<color name="deep_rec_user_bg">#f6f6f6</color>
+	<color name="deep_reply">#005dcf</color>
+	<color name="transparent">#00000000</color>
+
+	<color name="actionbar_item_background_normal">@color/transparent</color>
+	<color name="actionbar_item_background_pressed">#ec407a</color>
+
+	<color name="whole_toolbar_bg">#fd6363</color>
+
+	<color name="center_blank">#dbdbdb</color>
+
+	<color name="cate_menu_bg">#f5f5f5</color>
+
+	<color name="category_sort_text_color">#444444</color>
+	<color name="category_title_text_color">#323232</color>
+	<color name="waredetail_price_trend_off">#484848</color>
+	<color name="waredetail_like_off">#434343</color>
+	<color name="waredetail_like_on">#fc8480</color>
+
+	<color name="filter_one_class_text_color">#999999</color>
+	<color name="filter_text_checked">#fff</color>
+	<color name="filter_text_unchecked">#393939</color>
+	<color name="filter_text_unable">#999999</color>
+
+	<color name="home_special_time_color">#666666</color>
+
+	<color name="waredetail_bijia_price_color_first">#fd6363</color>
+	<color name="waredetail_bijia_price_color">#4ba4e2</color>
+
+	<color name="OrangeTheme">#fd6363</color>
+	<color name="Orange">#e75946</color>
+	<color name="Yellow">#f4d227</color>
+	<color name="Blue">#4674e7</color>
+	<color name="Green">#0ba62c</color>
+
+	<color name="green">#75cd00</color>
+	<color name="green_dark">#3c6e02</color>
+	<color name="blue">#0044e1</color>
+	<color name="blue_dark">#00217c</color>
+	<color name="red">#d11e2c</color>
+	<color name="red_dark">#810f19</color>
+	<color name="gray">#b6b1ac</color>
+	<color name="gray_dark">#6d6967</color>
+	<color name="black">#000000</color>
+	<color name="black_pressed">#7b7b7b</color>
+
+
+	<color name="goodcolor_off">#d9d9d9</color>
+
+	<color name="bbs_bg_1">#c293dd</color>
+	<color name="bbs_bg_2">#fece5b</color>
+	<color name="bbs_bg_3">#acd697</color>
+	<color name="bbs_bg_4">#72b9e8</color>
+	<color name="bbs_bg_5">#4cd1c7</color>
+	<color name="bbs_bg_6">#56ca96</color>
+	<color name="bbs_bg_7">#8f94fd</color>
+	<color name="bbs_bg_8">#b4b4b4</color>
+	<color name="bbs_bg_9">#d2ba91</color>
+
+	<color name="drop_down_unselected">#333333</color>
+	<color name="drop_down_selected">#fd6363</color>
+	<color name="drop_down_divider">#ececec</color>
+	<color name="drop_down_underline">#ececec</color>
+	<color name="drop_down_mask">#88000000</color>
+	<color name="drop_down_background">#ffffff</color>
+
+	<color name="sort_selected_text_color">#fffd6363</color>
+	<color name="sort_normal_text_color">#ff000000</color>
+
+	<color name="notice_me">#11000000</color>
+
+	<color name="list_item_background_normal">@color/white</color>
+	<color name="list_item_background_pressed">#efefef</color>
+	<color name="backgroundn">#F9F9F9</color>
+	<color name="backgroundnW">#FFFFFF</color>
+	<color name="backgrounds">#ececec</color>
+
+	<color name="white">#FFFFFF</color>
+
+	<color name="reply_button_disable">#f5f5f5</color>
+	<color name="reply_button_text">#dfFFFFFF</color>
+	<color name="reply_button_text_disable">#b8b8b8</color>
+	<color name="text_primary">#df000000</color>
+
+	<color name="bg_edittext_color">#00000000</color>
+
+	<color name="bg_horizontal_line_color">#80a3a4a7</color>
+	<color name="bg_horizontal_btn_normal">#eeeeee</color>
+	<color name="bg_horizontal_btn_selected">#70a3a4a7</color>
+
+	<color name="bg_indicator_point_normal">#D8D8D8</color>
+	<color name="bg_indicator_point_selected">#A6A6A6</color>
+	<color name="province_line_border">#C7C7C7</color>
+
+	<color name="colB5B5B5">#B5B5B5</color>
+	<color name="colFFF2EF">#FFF2EF</color>
+	<color name="colF4F4F4">#F4F4F4</color>
+	<color name="col666666">#666666</color>
 </resources>

@@ -1,3 +1,9 @@
 <resources>
 	<string name="app_name">PictureSelecotor</string>
+	<!--文字搜索-->
+	<string name="sort_composite">综合</string>
+	<string name="sort_salenum">销量</string>
+	<string name="sort_price">价格</string>
+	<string name="sort_filter">筛选</string>
+	<string name="sort_new">上新</string>
 </resources>
