@@ -187,7 +187,7 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
     }
   }
 
-  private int[] imageResId = {
+  private int[] imageResIds = {
       0, 0, R.drawable.search_icon_price_normal, R.mipmap.cate_filter,
   };
 
