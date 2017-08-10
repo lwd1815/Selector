@@ -56,11 +56,8 @@ public class DuTextSearchActivity extends BaseDeepActivity {
   @Override protected void initActivity() {
     setContentView(R.layout.activity_text_search);
     ButterKnife.bind(this);
-
     EventBus.getDefault().register(this);
-
     fragmentTab = getIntent().getIntExtra("fragmentTab", 0);
-
     initToolBar();
     initFlowLayout();
   }
@@ -238,20 +235,6 @@ public class DuTextSearchActivity extends BaseDeepActivity {
    * 键盘搜索按钮
    */
   public void onEvent(SearchEvent event) {
-    //去重
-    //List<String> list = CacheManager.getInstance().getSearchHistory();
-    //Iterator<String> iterator = list.iterator();
-    //boolean flag = false;
-    //while (iterator.hasNext()) {
-    //  String item = iterator.next();
-    //  if (TextUtils.equals(event.getMsg(), item)) {
-    //    flag = true;
-    //  }
-    //}
-    //if (flag == false) {
-    //  addText(flHistory, event.getMsg());
-    //}
-
     saveSearchHistory(event.getMsg());
   }
 

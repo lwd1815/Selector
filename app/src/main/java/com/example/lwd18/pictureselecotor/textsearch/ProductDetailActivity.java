@@ -3,7 +3,6 @@ package com.example.lwd18.pictureselecotor.textsearch;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -352,12 +351,6 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
    */
   public void onEventMainThread(FinishEventUtil event) {
     closeMenu();
-  }
-
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    // TODO: add setContentView(...) invocation
-    ButterKnife.bind(this);
   }
 }
 
