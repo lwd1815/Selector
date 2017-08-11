@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.alibaba.fastjson.JSON;
@@ -30,7 +29,8 @@ import java.util.List;
 import okhttp3.Call;
 
 
-public class GoodsDetailActivity extends BaseDeepActivity {
+
+public class GoodsDetailActivity extends BaseDeepActivity implements View.OnClickListener{
 
   @BindView(R.id.top_news_viewpager_ll) LinearLayout mTopNewsViewpagerLl;
   @BindView(R.id.dots_ll) LinearLayout mDotsLl;
@@ -77,17 +77,24 @@ public class GoodsDetailActivity extends BaseDeepActivity {
   private String productId;
   boolean isNetCollect = true;
   private int position=1;
+  private int price;
+  private String lv;
   @Override protected void initActivity() {
     setContentView(R.layout.activity_goods_detail);
     ButterKnife.bind(this);
     Intent intent = getIntent();
     productId = intent.getStringExtra("productId");
+    price = intent.getIntExtra("price", 0);
+    lv = intent.getStringExtra("lv");
     initAppBar();
     getData(1);
     proList=new ArrayList<>();
     newlist=new ArrayList<>();
     initFirstRv();
     initSecondRv();
+    mCommentSimplePrice.setText("¥"+price);
+    mCommentSimplePrices.setText("¥"+lv);
+    initClick();
   }
 
   private void initAppBar() {
@@ -97,8 +104,8 @@ public class GoodsDetailActivity extends BaseDeepActivity {
         finish();
       }
     });
-    //mWebview.getSettings().setJavaScriptEnabled(true);
-    //mWebview.loadUrl("http://baidu.com");
+    mWebview.getSettings().setJavaScriptEnabled(true);
+    mWebview.loadUrl("http://api.deepbaytech.com/mobile/prod-detail-chart.html");
   }
 
   private void initFirstRv() {
@@ -106,18 +113,18 @@ public class GoodsDetailActivity extends BaseDeepActivity {
     mFirstAdapter = new FirstAdapter();
     mRvGoods.setLayoutManager(line);
     mRvGoods.setAdapter(mFirstAdapter);
-    initClick();
   }
 
   private void initClick() {
-    mMore.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        //加载数据
-        Toast.makeText(GoodsDetailActivity.this, "点击了", Toast.LENGTH_SHORT).show();
-        //position=2;
-       // getData(2);
-      }
-    });
+    mMore.setOnClickListener(this);
+    mTaobao.setOnClickListener(this);
+    mTianmao.setOnClickListener(this);
+    mJd.setOnClickListener(this);
+    mGuomei.setOnClickListener(this);
+    mSUnin.setOnClickListener(this);
+    mDd.setOnClickListener(this);
+    mYamaxun.setOnClickListener(this);
+    mYihaodian.setOnClickListener(this);
   }
 
   private void initSecondRv() {
@@ -206,8 +213,6 @@ public class GoodsDetailActivity extends BaseDeepActivity {
     }
   }
 
-
-
   private void getData(int index) {
     OkHttpUtils.get()
         .url(ApiConstants.PRODUCTSEARCH)
@@ -218,16 +223,13 @@ public class GoodsDetailActivity extends BaseDeepActivity {
         .execute(new StringCallback() {
 
           @Override public void onError(Call call, Exception e, int id) {
-            if (isNetCollect) {
 
-            } else {
-
-            }
           }
 
           @Override public void onResponse(String response, int id) {
             Log.w("刚获取数据时", response);
-            final ProductDetailEntity productDetailEntity = JSON.parseObject(response, ProductDetailEntity.class);
+            final ProductDetailEntity
+                productDetailEntity = JSON.parseObject(response, ProductDetailEntity.class);
             System.out.println("TextSearchResponse=====" + response);
             //记录总页数
             if (productDetailEntity.getState() == 0) {
@@ -240,8 +242,6 @@ public class GoodsDetailActivity extends BaseDeepActivity {
               initlistener();
               onclickvp();
               mComment.setText(productDetailEntity.getData().getTitle());
-              mCommentSimple.setText("");
-              mCommentSimplePrices.setText("¥"+productDetailEntity.getData().getPrice());
               mLook.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                   Uri uri = Uri.parse(productDetailEntity.getData().getDetailUrl());
@@ -263,5 +263,214 @@ public class GoodsDetailActivity extends BaseDeepActivity {
             }
           }
         });
+  }
+  //用来记录被点击的位置
+  private int type=-1;
+  @Override public void onClick(View v) {
+    switch (v.getId()){
+      case R.id.more:
+        break;
+      //淘宝
+      case R.id.taobao:
+        type=0;
+        toggle0();
+        break;
+      //天猫
+      case R.id.tianmao:
+        type=1;
+        toggle1();
+        break;
+      //京东
+      case R.id.jd:
+        type=2;
+        toggle2();
+        break;
+      //国美
+      case R.id.guomei:
+        type=3;
+        toggle3();
+        break;
+      //苏宁
+      case R.id.SUnin:
+        type=4;
+        toggle4();
+        break;
+      //当当
+      case R.id.dd:
+        type=5;
+        toggle5();
+        break;
+      //亚马逊
+      case R.id.yamaxun:
+        type=6;
+        toggle6();
+        break;
+      //一号店
+      case R.id.yihaodian:
+        type=7;
+        toggle7();
+        break;
+    }
+  }
+
+  //设置淘宝的点击事件
+  public boolean mIsToggle0;
+  public void setToggleOn0(boolean isToggle){
+    mIsToggle0=isToggle;
+    if (isToggle){
+      mTaobao.setBackgroundResource(R.drawable.select_taobao);
+      mTaobao.setTextColor(getResources().getColor(R.color.taobao));
+    }else{
+      mTaobao.setBackgroundResource(R.drawable.select_text_normal);
+      mTaobao.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle0(){
+    return mIsToggle0;
+  }
+
+  public void toggle0() {
+    setToggleOn0(!mIsToggle0);
+  }
+  //设置天猫的点击事件
+  public boolean mIsToggle1;
+  public void setToggleOn1(boolean isToggle){
+    mIsToggle1=isToggle;
+    if (isToggle){
+      mTianmao.setBackgroundResource(R.drawable.select_tianmao);
+      mTianmao.setTextColor(getResources().getColor(R.color.tianmao));
+    }else{
+      mTianmao.setBackgroundResource(R.drawable.select_text_normal);
+      mTianmao.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle1(){
+    return mIsToggle0;
+  }
+
+  public void toggle1() {
+    setToggleOn1(!mIsToggle1);
+  }
+  //设置京东的点击事件
+  public boolean mIsToggle2;
+  public void setToggleOn2(boolean isToggle){
+    mIsToggle2=isToggle;
+    if (isToggle){
+      mJd.setBackgroundResource(R.drawable.select_jd);
+      mJd.setTextColor(getResources().getColor(R.color.jd));
+    }else{
+      mJd.setBackgroundResource(R.drawable.select_text_normal);
+      mJd.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle2(){
+    return mIsToggle2;
+  }
+
+  public void toggle2() {
+    setToggleOn2(!mIsToggle2);
+  }
+  //设置国美的点击事件
+  public boolean mIsToggle3;
+  public void setToggleOn3(boolean isToggle){
+    mIsToggle3=isToggle;
+    if (isToggle){
+      mGuomei.setBackgroundResource(R.drawable.select_guomei);
+      mGuomei.setTextColor(getResources().getColor(R.color.guomei));
+    }else{
+      mGuomei.setBackgroundResource(R.drawable.select_text_normal);
+      mGuomei.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle3(){
+    return mIsToggle3;
+  }
+
+  public void toggle3() {
+    setToggleOn3(!mIsToggle3);
+  }
+  //设置苏宁的点击事件
+  public boolean mIsToggle4;
+  public void setToggleOn4(boolean isToggle){
+    mIsToggle4=isToggle;
+    if (isToggle){
+      mSUnin.setBackgroundResource(R.drawable.select_suning);
+      mSUnin.setTextColor(getResources().getColor(R.color.suning));
+    }else{
+      mSUnin.setBackgroundResource(R.drawable.select_text_normal);
+      mSUnin.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle4(){
+    return mIsToggle4;
+  }
+
+  public void toggle4() {
+    setToggleOn4(!mIsToggle4);
+  }
+  //设置当当的点击事件
+  public boolean mIsToggle5;
+  public void setToggleOn5(boolean isToggle){
+    mIsToggle5=isToggle;
+    if (isToggle){
+      mDd.setBackgroundResource(R.drawable.select_dangdang);
+      mDd.setTextColor(getResources().getColor(R.color.dangdang));
+    }else{
+      mDd.setBackgroundResource(R.drawable.select_text_normal);
+      mDd.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle5(){
+    return mIsToggle5;
+  }
+
+  public void toggle5() {
+    setToggleOn5(!mIsToggle5);
+  }
+  //设置亚马逊的点击事件
+  public boolean mIsToggle6;
+  public void setToggleOn6(boolean isToggle){
+    mIsToggle6=isToggle;
+    if (isToggle){
+      mYamaxun.setBackgroundResource(R.drawable.select_yamaxun);
+      mYamaxun.setTextColor(getResources().getColor(R.color.yamasun));
+    }else{
+      mYamaxun.setBackgroundResource(R.drawable.select_text_normal);
+      mYamaxun.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle6(){
+    return mIsToggle6;
+  }
+
+  public void toggle6() {
+    setToggleOn6(!mIsToggle6);
+  }
+  //设置一号店的点击事件
+  public boolean mIsToggle7;
+  public void setToggleOn7(boolean isToggle){
+    mIsToggle7=isToggle;
+    if (isToggle){
+      mYihaodian.setBackgroundResource(R.drawable.select_yihaodian);
+      mYihaodian.setTextColor(getResources().getColor(R.color.yihaodian));
+    }else{
+      mYihaodian.setBackgroundResource(R.drawable.select_text_normal);
+      mYihaodian.setTextColor(getResources().getColor(R.color.normal));
+    }
+  }
+
+  public boolean isToggle7(){
+    return mIsToggle7;
+  }
+
+  public void toggle7() {
+    setToggleOn7(!mIsToggle7);
   }
 }

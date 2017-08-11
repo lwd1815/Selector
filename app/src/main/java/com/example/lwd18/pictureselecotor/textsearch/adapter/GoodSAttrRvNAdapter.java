@@ -42,8 +42,8 @@ public class GoodSAttrRvNAdapter extends RecyclerView.Adapter<GoodSAttrRvNAdapte
 
   @Override
   public GoodSAttrRvNAdapter.MyAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
-    //View view = View.inflate(parent.getContext(), R.layout.item_goods_attrs, null);
-    View view = View.inflate(parent.getContext(), R.layout.gv_right_sideslip_child_layout, null);
+    View view = View.inflate(parent.getContext(), R.layout.item_goods_attrs, null);
+    //View view = View.inflate(parent.getContext(), R.layout.gv_right_sideslip_child_layout, null);
     return new MyAdapter(view);
   }
 

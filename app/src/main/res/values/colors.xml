@@ -134,4 +134,15 @@
 	<color name="colFFF2EF">#FFF2EF</color>
 	<color name="colF4F4F4">#F4F4F4</color>
 	<color name="col666666">#666666</color>
+
+	<!--文字搜索详情-->
+	<color name="normal">#666666</color>
+	<color name="taobao">#F88535</color>
+	<color name="tianmao">#FF2F45</color>
+	<color name="jd">#DC2579</color>
+	<color name="guomei">#664184</color>
+	<color name="dangdang">#197977</color>
+	<color name="suning">#00B6E4</color>
+	<color name="yamasun">#FCCC00</color>
+	<color name="yihaodian">#0400a0</color>
 </resources>
