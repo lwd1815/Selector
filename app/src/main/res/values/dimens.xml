@@ -1,0 +1,16 @@
+<resources>
+	<!-- Default screen margins, per the Android Design guidelines. -->
+	<dimen name="activity_horizontal_margin">16dp</dimen>
+	<dimen name="activity_vertical_margin">16dp</dimen>
+	<dimen name="radio_img_search_textsize">12sp</dimen>
+	<dimen name="radio_imgsearch_textpadding">7dp</dimen>
+	<dimen name="fab_margin">16dp</dimen>
+	<dimen name="detail_title_textsize">11sp</dimen>
+	<dimen name="image_height">120dp</dimen>
+	<dimen name="text_size_12">12.0dip</dimen>
+	<dimen name="space_12">12.0dip</dimen>
+	<dimen name="space_16">16.0dip</dimen>
+	<dimen name="edit_filter_item_padding_LR">12dp</dimen>
+	<dimen name="image_left_right">10dp</dimen>
+	<dimen name="default_keyboard_height">268dp</dimen>
+</resources>

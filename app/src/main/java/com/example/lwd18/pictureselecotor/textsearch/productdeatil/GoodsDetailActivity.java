@@ -189,7 +189,7 @@ public class GoodsDetailActivity extends BaseDeepActivity implements View.OnClic
       @Override
       public void onItemClick(int position) {
         //进入photoview
-        //ImageBrowseActivity.startActivity(getBaseContext(), (ArrayList<String>) list,position);
+        // ImageBrowseActivity.startActivity(getBaseContext(), (ArrayList<String>) list,position);
       }
     });
   }

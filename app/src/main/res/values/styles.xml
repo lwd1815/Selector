@@ -52,6 +52,52 @@
 		<item name="android:backgroundDimAmount">0.6</item>
 		<item name="android:windowAnimationStyle">@style/ShareDialog</item>
 		<item name="android:windowCloseOnTouchOutside">true</item>
+	</style>
 
+
+	<!--长按保存图片-->
+	<!-- quick option style start -->
+	<style name="quick_option_item">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">center_horizontal</item>
+		<item name="android:orientation">vertical</item>
+		<item name="android:padding">@dimen/space_12</item>
+		<item name="android:background">@drawable/list_item_background</item>
+	</style>
+
+	<style name="quick_option_item_text">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginTop">@dimen/space_12</item>
+		<item name="android:textColor">@color/drawer_menu_text</item>
+		<item name="android:textSize">@dimen/text_size_12</item>
+	</style>
+	<!-- quick option style end -->
+	<!-- 操作项样式end -->
+	<style name="dialog_animation" parent="android:Animation">
+		<item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
+		<item name="@android:windowExitAnimation">@anim/dialog_exit</item>
+	</style>
+
+	<!--中间弹出-->
+	<style name="dialog_animation_center" parent="android:Animation">
+		<item name="@android:windowEnterAnimation">@anim/anim_center_enter</item>
+		<item name="@android:windowExitAnimation">@anim/anim_center_exit</item>
+	</style>
+
+	<style name="dialog_common" parent="@style/Theme.AppCompat.Light.Dialog">
+		<item name="android:windowBackground">@drawable/dialog_background</item>
+	</style>
+
+	<style name="dialog_bottom" parent="@style/dialog_common">
+		<item name="android:windowBackground">@drawable/dialog_bottom_background</item>
+		<item name="android:windowAnimationStyle">@style/dialog_animation_center</item>
+	</style>
+
+	<style name="quick_option_dialog" parent="@style/dialog_common">
+		<item name="android:windowBackground">@color/white40</item>
+		<item name="android:windowAnimationStyle">@style/dialog_animation_center</item>
 	</style>
 </resources>
