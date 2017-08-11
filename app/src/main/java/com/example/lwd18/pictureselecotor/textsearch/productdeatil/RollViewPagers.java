@@ -99,7 +99,7 @@ import java.util.List;
             //            Glide.with(context).load(new File(path)).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(vh.imageView);
             Glide.with(getContext())
                 .load("http:"+mimageUrlslist.get(position))
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.loading_z))
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_empty_page))
                 .into(imageView);
             container.addView(imageView);
             return imageView;
