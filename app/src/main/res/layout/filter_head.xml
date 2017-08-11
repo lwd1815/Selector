@@ -11,7 +11,7 @@
 			android:layout_height="30dp"
 			android:layout_margin="5dp"
 			android:layout_weight="1"
-			android:background="#ffffff"
+			android:background="@drawable/goods_attr_unselected_shape"
 			android:gravity="center"
 			android:textColor="@color/product_selected"
 			android:textSize="10sp"

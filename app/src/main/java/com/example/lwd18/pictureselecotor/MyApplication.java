@@ -20,7 +20,7 @@ import okhttp3.OkHttpClient;
 /**
  * Created by EtherealPatrick on 2016/9/8.
  */
-public class MyApplication extends MultiDexApplication{
+public class MyApplication extends MultiDexApplication {
     private static  int windowWidth;
     private static  int windowHeight;
 

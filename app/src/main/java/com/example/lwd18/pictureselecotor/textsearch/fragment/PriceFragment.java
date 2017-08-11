@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -24,9 +25,8 @@ import com.example.lwd18.pictureselecotor.ApiConstants;
 import com.example.lwd18.pictureselecotor.BaseFragment;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
-import com.example.lwd18.pictureselecotor.textsearch.Eventutil.EventUtil;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.SecondEventil;
 import com.example.lwd18.pictureselecotor.textsearch.adapter.PriceAdapter;
-import com.example.lwd18.pictureselecotor.textsearch.utils.TextEventUtil;
 import com.example.lwd18.pictureselecotor.textsearch.utils.TextPriceEventUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -194,6 +194,7 @@ public class PriceFragment extends BaseFragment {
         startActivity(wifiSettingsIntent);
       }
     });
+
   }
 
 
@@ -222,6 +223,7 @@ public class PriceFragment extends BaseFragment {
             if (textSearch.getData()!=null&&textSearch.getState() == 0) {
               sumpageid.clear();
               sumpageid.add(textSearch.getData().getPageTotal());
+
               if (rlNetStates!=null) {
                 rlNetStates.setVisibility(View.GONE);
               }
@@ -235,16 +237,20 @@ public class PriceFragment extends BaseFragment {
               if (textSearch.getData().getFilters() != null) {
                 filterlist.addAll(textSearch.getData().getFilters());
                 newfilterlist.addAll(filterlist);
+                adapter.addFilterItem(newfilterlist);
+              }else {
+                adapter.notifyDataSetChanged();
               }
               System.out.println("position====" + position);
               if (position == 1) {
                 adapter.addItem(newlist);
-                adapter.addFilterItem(newfilterlist);
+                adapter.notifyDataSetChanged();
               } else {
                 adapter.addMoreItem(newlist);
               }
             } else if (textSearch.getState() == 3) {
-
+              Toast.makeText(getContext(), "查无数据", Toast.LENGTH_SHORT).show();
+              adapter.notifyDataSetChanged();
             } else {
 
             }
@@ -253,42 +259,44 @@ public class PriceFragment extends BaseFragment {
   }
 
   /**
-   * 用来接收消息
+   * 用来接收筛选框中传递过来的消息
    */
-  public void onEventMainThread(EventUtil event) {
-    System.out.println("接收到消息了====" + mExittext);
-    String msglog = event.getMsg();
-    mExittext = msglog;
-    getData(1,msg,sort);
-    mSrProductDetail.setRefreshing(false);//刷新完毕!
-    isloading = false;
-    currentPage = 1;
-    position = 1;
-  }
-
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
-
-  @Override public void onDestroy() {
-    super.onDestroy();
-    EventBus.getDefault().unregister(this);
-  }
-
-  /**
-   * 用来接收消息
-   */
-  public void onEventMainThread(TextEventUtil event) {
-    System.out.println("接收到消息了====" + msg);
-    String msglog = event.getMsgs();
-    msg=msglog;
+  public void onEventMainThread(SecondEventil event) {
+    List<String> filter = event.getFilter();
+    System.out.println("接收到筛选框确定后发来的消息了====" + filter.size());
+    List<String> newlist = new ArrayList<>();
+    newlist.clear();
+    newlist.addAll(filter);
+    for (String s : newlist) {
+      msg += s + "#";
+      System.out.println("接收到筛选框确定后发来的消息了====" + s);
+    }
+    msg = msg.substring(0, msg.length() - 1);
+    System.out.println("接收到筛选框确定msg====" + msg);
     getData(1, msg,sort);
+    msg = "";
     mSrProductDetail.setRefreshing(false);//刷新完毕!
     isloading = false;
     currentPage = 1;
     position = 1;
   }
+
+  ///**
+  // * 用来接收综合界面筛选项点击时传递过来的消息
+  // */
+  //public void onEventMainThread(TextEventUtil event) {
+  //  String msglog = event.getMsgs();
+  //  System.out.println("综合界面筛选项点击时传递过来的消息====" + msglog);
+  //  if ("".equals(msglog)){return;}
+  //  msg = msglog;
+  //  filterlist.clear();
+  //  newfilterlist.clear();
+  //  getData(1, msg,sort);
+  //  mSrProductDetail.setRefreshing(false);//刷新完毕!
+  //  isloading = false;
+  //  currentPage = 1;
+  //  position = 1;
+  //}
 
   /**
    * 用来接收消息
@@ -303,4 +311,16 @@ public class PriceFragment extends BaseFragment {
     currentPage = 1;
     position = 1;
   }
+
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    EventBus.getDefault().unregister(this);
+  }
+
 }

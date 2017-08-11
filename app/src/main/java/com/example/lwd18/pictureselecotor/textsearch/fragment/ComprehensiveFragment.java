@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import okhttp3.Call;
+
 /**
  * 创建者     李文东
  * 创建时间   2017/6/19 11:09
@@ -66,6 +68,7 @@ public class ComprehensiveFragment extends BaseFragment {
   private int position = 1;
   private List<TextsSearchEntity.DataBean.ItemsBean> newlist;
   private Handler mHandler = new Handler();
+
   boolean isNetCollect = true;
   private ComprehensiveAdapter adapter;
   private TextsSearchEntity textSearch;
@@ -194,6 +197,7 @@ public class ComprehensiveFragment extends BaseFragment {
         startActivity(wifiSettingsIntent);
       }
     });
+
   }
 
 
@@ -221,30 +225,36 @@ public class ComprehensiveFragment extends BaseFragment {
             if (textSearch.getData() != null && textSearch.getState() == 0) {
               sumpageid.clear();
               sumpageid.add(textSearch.getData().getPageTotal());
+
               if (rlNetStates != null) {
                 rlNetStates.setVisibility(View.GONE);
               }
               // TODO: 2017/8/8 若要累计,只需将下面两个list的清除注销掉即可 
               list.clear();
               newlist.clear();
-              //filterlist.clear();
-              //newfilterlist.clear();
               list.addAll(textSearch.getData().getItems());
               newlist.addAll(list);
               if (textSearch.getData().getFilters() != null) {
+                filterlist.clear();
+                newfilterlist.clear();
                 filterlist.addAll(textSearch.getData().getFilters());
                 newfilterlist.addAll(filterlist);
+                adapter.addFilterItem(newfilterlist);
+              }else {
+                adapter.notifyDataSetChanged();
               }
               System.out.println("position====" + position);
               if (position == 1) {
                 adapter.addItem(newlist);
-                adapter.addFilterItem(newfilterlist);
+                adapter.notifyDataSetChanged();
+                System.out.println("newfilterlist===================="+newfilterlist.size());
               } else {
                 adapter.addMoreItem(newlist);
               }
             } else if (textSearch.getState() == 3) {
               // TODO: 2017/8/8 如果没有查询到数据,以前数据不变.如果有数据,累加(感觉有问题,既是筛选就应该搜什么就显示什么,不应该累加)
-
+              Toast.makeText(getContext(), "查无数据", Toast.LENGTH_SHORT).show();
+              adapter.notifyDataSetChanged();
             } else {
 
             }
@@ -275,18 +285,26 @@ public class ComprehensiveFragment extends BaseFragment {
     position = 1;
   }
 
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
-
   /**
    * 用来接收综合界面筛选项点击时传递过来的消息
    */
   public void onEventMainThread(TextEventUtil event) {
     String msglog = event.getMsgs();
     System.out.println("综合界面筛选项点击时传递过来的消息====" + msglog);
+    if ("".equals(msglog)){return;}
     msg = msglog;
+    filterlist.clear();
+    newfilterlist.clear();
     getData(1, msg);
+    mSrProductDetail.setRefreshing(false);//刷新完毕!
+    isloading = false;
+    currentPage = 1;
+    position = 1;
   }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
+  }
+
 }

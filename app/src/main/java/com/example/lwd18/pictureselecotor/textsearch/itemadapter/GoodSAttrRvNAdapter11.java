@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.textsearch.Eventutil.Eventil;
@@ -37,8 +36,8 @@ public class GoodSAttrRvNAdapter11 extends RecyclerView.Adapter<GoodSAttrRvNAdap
 
   @Override
   public GoodSAttrRvNAdapter11.MyAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
-   // View view = View.inflate(parent.getContext(), R.layout.item_goods_attrs, null);
-    View view = View.inflate(parent.getContext(), R.layout.gv_right_sideslip_child_layout, null);
+    View view = View.inflate(parent.getContext(), R.layout.item_goods_attrs, null);
+    //View view = View.inflate(parent.getContext(), R.layout.gv_right_sideslip_child_layout, null);
     return new MyAdapter(view);
   }
 
@@ -49,16 +48,26 @@ public class GoodSAttrRvNAdapter11 extends RecyclerView.Adapter<GoodSAttrRvNAdap
      */
     holder.attr.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        EventBus.getDefault().post(new Eventil(mlist.get(position)));
-        for (int i = 0; i <selectedlist.size() ; i++) {
-          if (mlist.get(position).equals(selectedlist.get(i))){
-            selectedlist.remove(selectedlist.get(i));
-            holder.attr.setBackgroundResource(R.drawable.goods_attr_unselected_shape);
-            holder.attr.setTextColor(Color.GRAY);
-          }else {
+        System.out.println("点击了1");
+        if (selectedlist.size()<=0){
+          selectedlist.clear();
+          selectedlist.add(mlist.get(position));
+          holder.attr.setBackgroundResource(R.drawable.goods_attr_selected_shape);
+          holder.attr.setTextColor(Color.WHITE);
+          EventBus.getDefault().post(new Eventil(mlist.get(position)));
+          System.out.println("item第一次点击,走到此处");
+        }else {
+          if (!selectedlist.contains(mlist.get(position))){
             selectedlist.add(mlist.get(position));
             holder.attr.setBackgroundResource(R.drawable.goods_attr_selected_shape);
             holder.attr.setTextColor(Color.WHITE);
+            EventBus.getDefault().post(new Eventil(mlist.get(position)));
+            System.out.println("item被点击选中,走到了此处");
+          }else {
+            selectedlist.remove(mlist.get(position));
+            holder.attr.setBackgroundResource(R.drawable.goods_attr_unselected_shape);
+            holder.attr.setTextColor(Color.GRAY);
+            System.out.println("item被点击取消,走到了此处");
           }
         }
       }
@@ -75,7 +84,7 @@ public class GoodSAttrRvNAdapter11 extends RecyclerView.Adapter<GoodSAttrRvNAdap
 
     public MyAdapter(View itemView) {
       super(itemView);
-      attr = (CheckBox) itemView.findViewById(R.id.item_frameRb);
+      attr = (TextView) itemView.findViewById(R.id.attr_name);
     }
   }
 

@@ -70,7 +70,7 @@ public class ComprehensiveAdapter extends RecyclerView.Adapter<RecyclerView.View
     return null;
   }
 
-  @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
     int positions = (filterlist.size() - 1) * 6;
 
     if (holder instanceof NormalViewHolder) {
@@ -85,12 +85,14 @@ public class ComprehensiveAdapter extends RecyclerView.Adapter<RecyclerView.View
          "全网销量" + list.get(index).getViewSales() + "万");
      ((NormalViewHolder) holder).priceTaobao.setText("¥" + list.get(index).getFromat());
      ((NormalViewHolder) holder).priceMecheat.setText(
-         list.get(index).getShopCount() + "电商100商家比价");
+         list.get(index).getShopCount() + "商家比价");
 
       ((NormalViewHolder) holder).linearLayoutout.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
           Intent intent = new Intent(holder.itemView.getContext(), GoodsDetailActivity.class);
           intent.putExtra("productId",list.get(index).getId());
+          intent.putExtra("price",list.get(position).getPrice());
+          intent.putExtra("lv",list.get(index).getFromat());
           holder.itemView.getContext().startActivity(intent);
         }
       });
@@ -110,6 +112,8 @@ public class ComprehensiveAdapter extends RecyclerView.Adapter<RecyclerView.View
 
   @Override public int getItemCount() {
     int positions = (filterlist.size() - 1) * 6;
+
+    System.out.println("adapter中的数据===="+filterlist.size()+"list的数据=="+list.size());
     if (filterlist.size() == 0) {
       return list.size();
     } else if (list.size()<positions){
@@ -168,10 +172,10 @@ public class ComprehensiveAdapter extends RecyclerView.Adapter<RecyclerView.View
   }
 
   public void addFilterItem(List<TextsSearchEntity.DataBean.FiltersBean> mlists) {
-    filterlist.clear();
-    mlists.addAll(filterlist);
-    filterlist.removeAll(filterlist);
-    filterlist.addAll(mlists);
+   filterlist.clear();
+   mlists.addAll(filterlist);
+   filterlist.removeAll(filterlist);
+   filterlist.addAll(mlists);
     notifyDataSetChanged();
   }
 }

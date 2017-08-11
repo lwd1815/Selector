@@ -119,14 +119,15 @@ public class FilterFragments extends FrameLayout {
         EventBus.getDefault().post(new SecondEventil(filtelist));
         System.out.println("点击完成发送消息==="+newlist.size());
         EventBus.getDefault().post(new FinishEventUtil());
-        getData(keyword);
-        // TODO: 2017/7/24 待优化
-        for (int i = 0; i < mlist.size(); i++) {
-          for (int j = 0; j < mlist.get(i).getFilterOption().size(); j++) {
-            mlist.get(i).setChick(false);
-          }
-        }
-        adapter.notifyDataSetChanged();
+        //getData(keyword);
+        //// TODO: 2017/7/24 待优化
+        //for (int i = 0; i < mlist.size(); i++) {
+        //  for (int j = 0; j < mlist.get(i).getFilterOption().size(); j++) {
+        //    mlist.get(i).setChick(false);
+        //  }
+        //}
+        //adapter.notifyDataSetChanged();
+        filtelist.clear();
       }
     });
     this.addView(contentView);

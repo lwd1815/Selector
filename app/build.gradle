@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'newlens'
 android {
-  compileSdkVersion 26
+  compileSdkVersion 24
   buildToolsVersion "25.0.3"
   defaultConfig {
     applicationId "com.example.lwd18.pictureselecotor"
@@ -9,21 +10,11 @@ android {
     targetSdkVersion 24
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
-
-  defaultConfig {
-    applicationId "com.deepbaytech.tao"
-    minSdkVersion 17
-    targetSdkVersion 24
-    versionCode 1
-    versionName "0.0.1"
-    multiDexEnabled true
-
-    //个推配置
-    manifestPlaceholders = [GETUI_APP_ID    : "PhhVPDYg4x6MzMQ3Cgcdw9",
-                            GETUI_APP_KEY   : "kfyXyOkhCt62YQeZMbkHG4",
-                            GETUI_APP_SECRET: "7EPHGu1Gg68QwTTd2YQ4Z8"]
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
   }
   buildTypes {
     release {
@@ -36,8 +27,16 @@ android {
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
   compile project(':deeplibrary')
-  compile 'com.android.support:appcompat-v7:26.+'
-  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  compile files('libs/GetuiSDK2.9.5.0.jar')
+  compile files('libs/open_sdk_r5781.jar')
+  compile files('libs/SocialSDK_QQ_Full.jar')
+  compile files('libs/SocialSDK_Sina_Full.jar')
+  compile files('libs/SocialSDK_WeiXin_Full.jar')
+  compile files('libs/umeng_social_api.jar')
+  compile files('libs/umeng_social_net.jar')
+  compile files('libs/wechat-sdk-android-with-mta-1.0.2.jar')
+  compile files('libs/weiboSDKCore_3.1.4.jar')
+  //compile 'com.android.support.constraint:constraint-layout:1.0.2'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
   compile 'com.github.chrisbanes.photoview:library:+'
   compile 'com.squareup.picasso:picasso:+'
@@ -52,9 +51,12 @@ dependencies {
   compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
   compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
   compile 'com.zcw:togglebutton-library:1.0.0'
+  compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.3.2'
   compile 'com.zhy:okhttputils:2.6.2'
   compile 'com.alibaba:fastjson:1.1.54.android'
   compile 'com.networkbench.newlens.agent.android:nbs.newlens.agent:2.5.0'
+  compile 'com.github.AlphaBoom:ClassifyView:0.5.2'
+  compile 'me.yokeyword:fragmentation:0.10.3'
   compile 'com.squareup.retrofit2:retrofit:2.2.0'
   compile 'com.squareup.retrofit2:converter-gson:2.2.0'
   compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
@@ -64,11 +66,8 @@ dependencies {
   compile 'com.android.support:multidex:1.0.1'
   compile 'com.yolanda.nohttp:nohttp:1.1.0'
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
-  compile 'me.yokeyword:fragmentation:0.10.3'
-  compile 'com.android.support:design:24.2.0'
-  compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
+  compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
   testCompile 'junit:junit:4.12'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.2.1'
   compile files('libs/alipaySdk-20161222.jar')
-  compile project(':deeplibrary')
 }
