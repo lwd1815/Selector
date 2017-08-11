@@ -151,6 +151,7 @@ public class FilterUtils {
 
   public static int getSize(List<TextsSearchEntity.DataBean.ItemsBean> list) {
     if (list.size() > 0 && list.size() < 5) {
+      return list.size()+1;
     } else if (list.size() < 10 && list.size() >= 5) {
       return list.size() + 2;
     } else if (list.size() >= 10 && list.size() < 15) {
@@ -172,7 +173,6 @@ public class FilterUtils {
     } else {
       return list.size() + 11;
     }
-    return 0;
   }
 
   //public static void setVisibile(RecyclerView.ViewHolder holder, int newpositions,
