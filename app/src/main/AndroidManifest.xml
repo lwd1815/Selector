@@ -19,5 +19,6 @@
 
 		<activity android:name=".textsearch.productdeatil.GoodsDetailActivity"/>
 		<activity android:name=".textsearch.ProductDetailActivity"/>
+		<activity android:name=".bigphotobrows.ImageBrowseActivity"/>
 	</application>
 </manifest>

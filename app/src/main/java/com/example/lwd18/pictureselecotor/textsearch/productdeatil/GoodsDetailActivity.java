@@ -22,6 +22,7 @@ import com.example.lwd18.pictureselecotor.ApiConstants;
 import com.example.lwd18.pictureselecotor.BaseDeepActivity;
 import com.example.lwd18.pictureselecotor.ProductDetailEntity;
 import com.example.lwd18.pictureselecotor.R;
+import com.example.lwd18.pictureselecotor.bigphotobrows.ImageBrowseActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.ArrayList;
@@ -184,12 +185,16 @@ public class GoodsDetailActivity extends BaseDeepActivity implements View.OnClic
   }
 
   //        //第五步：轮播图点击监听
-  private void onclickvp() {
+  private void onclickvp(final List<String> lists) {
+    final List<String> list = new ArrayList<>();
     rollViewPager.setOnItemClickListener(new RollViewPagers.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
         //进入photoview
-        // ImageBrowseActivity.startActivity(getBaseContext(), (ArrayList<String>) list,position);
+        for (int i = 0; i < lists.size(); i++) {
+          list.add("http:"+lists.get(i));
+        }
+         ImageBrowseActivity.startActivity(getBaseContext(), (ArrayList<String>) list,position);
       }
     });
   }
@@ -240,7 +245,7 @@ public class GoodsDetailActivity extends BaseDeepActivity implements View.OnClic
               list.addAll(productDetailEntity.getData().getPicUrl());
               initview();
               initlistener();
-              onclickvp();
+              onclickvp(list);
               mComment.setText(productDetailEntity.getData().getTitle());
               mLook.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
