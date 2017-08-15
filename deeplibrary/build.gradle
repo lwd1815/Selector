@@ -32,9 +32,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.8@aar'
-
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'top.zibin:Luban:1.0.9'
     compile 'com.facebook.fresco:fresco:0.12.0'
+    //litepal 1.6之后支持对数据库进行加密了,分为AES和MD5加密,同时可以将数据库保存到sd卡中(郭林)
+    compile 'org.litepal.android:core:1.6.0'
 }
