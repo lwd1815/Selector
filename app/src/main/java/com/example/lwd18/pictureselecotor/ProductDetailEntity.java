@@ -5,10 +5,10 @@ import java.util.List;
 /**
  * 创建者     李文东
  * 创建时间   2017/7/11 17:36
- * 描述	      ${TODO}
+ * 描述
  * 更新者     $Author$
  * 更新时间   $Date$
- * 更新描述   ${TODO}
+ * 更新描述
  */
 
 public class ProductDetailEntity {
@@ -84,9 +84,37 @@ public class ProductDetailEntity {
     private int viewSales;
     private String platform;
     private String detailUrl;
+    private String pfromId;
     private String proCharts;
     private List<String> picUrl;
     private List<SameProductsBean> sameProducts;
+    private int amountType;
+    private double amountMoney;
+
+    public String getPfromId() {
+      return pfromId;
+    }
+
+    public void setPfromId(String pfromId) {
+      this.pfromId = pfromId;
+    }
+
+    public int getAmountType() {
+      return amountType;
+    }
+
+    public void setAmountType(int amountType) {
+      this.amountType = amountType;
+    }
+
+    public double getAmountMoney() {
+      return amountMoney;
+    }
+
+    public void setAmountMoney(double amountMoney) {
+      this.amountMoney = amountMoney;
+    }
+
 
     public String getId() {
       return id;
@@ -168,22 +196,60 @@ public class ProductDetailEntity {
        * detailUrl : http://h5.m.taobao.com/awp/core/detail.htm?id=540721743049
        * picUrl : //g-search3.alicdn.com/img/bao/uploaded/i4/i1/2851289470/TB23uBPaH5K.eBjy0FnXXaZzVXa_!!2851289470.jpg
        */
-      private int id;
+      private String id;
       private String title;
       private int price;
-      private String platform;
-      private String detailUrl;
-      private String picUrl;
       private int viewSales;
+      private String platform;
       private int platformCount;
+      private String detailUrl;
       private String keywords;
       private String fromat;
+      private String picUrl;
       private int shopCount;
-      public int getId() {
+      private String pfromId;
+      private int type;
+      private int amountType;
+      private double amountMoney;
+
+
+      public String getPfromId() {
+        return pfromId;
+      }
+
+      public void setPfromId(String pfromId) {
+        this.pfromId = pfromId;
+      }
+
+      public int getType() {
+        return type;
+      }
+
+      public void setType(int type) {
+        this.type = type;
+      }
+
+      public int getAmountType() {
+        return amountType;
+      }
+
+      public void setAmountType(int amountType) {
+        this.amountType = amountType;
+      }
+
+      public double getAmountMoney() {
+        return amountMoney;
+      }
+
+      public void setAmountMoney(double amountMoney) {
+        this.amountMoney = amountMoney;
+      }
+
+      public String getId() {
         return id;
       }
 
-      public void setId(int id) {
+      public void setId(String id) {
         this.id = id;
       }
 

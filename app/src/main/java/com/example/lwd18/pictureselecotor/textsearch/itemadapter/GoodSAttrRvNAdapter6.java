@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.lwd18.pictureselecotor.R;
+import com.example.lwd18.pictureselecotor.textsearch.DataPresenter;
 import com.example.lwd18.pictureselecotor.textsearch.Eventutil.Eventil;
-import com.example.lwd18.pictureselecotor.textsearch.utils.FilterUtils;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.FilterUtils;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.SecondEventil;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.TranstEventil;
 import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +21,10 @@ import java.util.List;
 /**
  * 创建者     李文东
  * 创建时间   2017/7/10 15:38
- * 描述	      ${TODO}
+ * 描述
  * 更新者     $Author$
  * 更新时间   $Date$
- * 更新描述   ${TODO}
+ * 更新描述
  */
 
 public class GoodSAttrRvNAdapter6 extends RecyclerView.Adapter<GoodSAttrRvNAdapter6.MyAdapter> {
@@ -31,51 +34,55 @@ public class GoodSAttrRvNAdapter6 extends RecyclerView.Adapter<GoodSAttrRvNAdapt
   public GoodSAttrRvNAdapter6(Context context) {
     this.context = context;
     mlist=new ArrayList<>();
-    selectedlist=new ArrayList<>();
+    selectedlist = DataPresenter.getSingleTon().getSelectList();
+    EventBus.getDefault().register(this);
   }
 
   @Override
   public GoodSAttrRvNAdapter6.MyAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
     View view = View.inflate(parent.getContext(), R.layout.item_goods_attrs, null);
-    //View view = View.inflate(parent.getContext(), R.layout.gv_right_sideslip_child_layout, null);
     return new MyAdapter(view);
   }
 
   @Override public void onBindViewHolder(final GoodSAttrRvNAdapter6.MyAdapter holder, final int position) {
     holder.attr.setText(mlist.get(position));
+    //强制禁止recycleview复用
+    holder.setIsRecyclable(false);
+    //用来接收综合界面传递过来的选择
+    for (int i = 0; i < selectedlist.size(); i++) {
+      if (selectedlist.contains(mlist.get(position))) {
+        holder.attr.setBackgroundResource(R.drawable.goods_attr_selected_shape);
+        holder.attr.setTextColor(Color.WHITE);
+      }
+    }
     /**
      * 根据选中状态来设置item的背景和字体颜色
      */
     holder.attr.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        System.out.println("点击了1");
-        if (selectedlist.size()<=0){
-          selectedlist.clear();
-          selectedlist.add(mlist.get(position));
+        if (selectedlist.size() <= 0) {
           holder.attr.setBackgroundResource(R.drawable.goods_attr_selected_shape);
           holder.attr.setTextColor(Color.WHITE);
           EventBus.getDefault().post(new Eventil(mlist.get(position)));
-          System.out.println("item第一次点击,走到此处");
-        }else {
-          if (!selectedlist.contains(mlist.get(position))){
-            selectedlist.add(mlist.get(position));
+
+        } else {
+          if (!selectedlist.contains(mlist.get(position))) {
             holder.attr.setBackgroundResource(R.drawable.goods_attr_selected_shape);
             holder.attr.setTextColor(Color.WHITE);
             EventBus.getDefault().post(new Eventil(mlist.get(position)));
-            System.out.println("item被点击选中,走到了此处");
-          }else {
-            selectedlist.remove(mlist.get(position));
+          } else {
             holder.attr.setBackgroundResource(R.drawable.goods_attr_unselected_shape);
-            holder.attr.setTextColor(Color.GRAY);
-            System.out.println("item被点击取消,走到了此处");
+            holder.attr.setTextColor(Color.BLACK);
           }
         }
+        //保存
+        DataPresenter.getSingleTon().saveSelect(mlist.get(position));
+        EventBus.getDefault().post(new SecondEventil());
       }
     });
   }
 
   @Override public int getItemCount() {
-    System.out.println("mlist========"+mlist.size());
     return mlist==null?0: mlist.size();
   }
 
@@ -87,7 +94,6 @@ public class GoodSAttrRvNAdapter6 extends RecyclerView.Adapter<GoodSAttrRvNAdapt
       attr = (TextView) itemView.findViewById(R.id.attr_name);
     }
   }
-
   public void notifyDataSetChanged(boolean isUnfold, final List<String> tempData,int position) {
     if (tempData == null || 0 == tempData.size()) {
       return;
@@ -124,26 +130,10 @@ public class GoodSAttrRvNAdapter6 extends RecyclerView.Adapter<GoodSAttrRvNAdapt
     mlist.addAll(newDatas);
     notifyDataSetChanged();
   }
-
-
-  //设置保存图片到本地的开关按钮的点击事件所调用的方法
-  public boolean mIsToggle;
-  public void setToggleOn(boolean isToggle,GoodSAttrRvNAdapter6.MyAdapter holder,  int position){
-    mIsToggle=isToggle;
-    if (isToggle){
-      holder.attr.setBackgroundResource(R.drawable.goods_attr_selected_shape);
-      holder.attr.setTextColor(Color.WHITE);
-    }else{
-      holder.attr.setBackgroundResource(R.drawable.goods_attr_unselected_shape);
-      holder.attr.setTextColor(Color.GRAY);
-    }
-  }
-
-  public boolean isToggle(){
-    return mIsToggle;
-  }
-
-  public void toggle(GoodSAttrRvNAdapter6.MyAdapter holder,  int position) {
-    setToggleOn(!mIsToggle,holder,position);
+  /**
+   * 用来接收筛选框中的消息
+   */
+  public void onEventMainThread(TranstEventil event) {
+    notifyDataSetChanged();
   }
 }

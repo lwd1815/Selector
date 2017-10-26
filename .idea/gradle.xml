@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/deeplibrary" />
+            <option value="$PROJECT_DIR$/deepstatelayout" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

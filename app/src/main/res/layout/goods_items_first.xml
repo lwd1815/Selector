@@ -4,28 +4,79 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <View
-        android:layout_marginLeft="105dp"
         android:background="#ECECEC"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/li_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="113dp"
+            android:layout_height="113dp">
         <ImageView
             android:id="@+id/icon_product"
             android:layout_width="105dp"
             android:layout_height="105dp"
             android:layout_margin="4dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/toyou"/>
+            android:src="@drawable/loading"/>
+
+        <LinearLayout
+            android:id="@+id/ll_ware_item_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/bg_ware_fanli"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ware_fanli"/>
+            <TextView
+                android:id="@+id/tv_amount_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="9.9999999"
+                android:textColor="@color/deep_white_color"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/ll_ware_item_textsearch"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/coupons_bottom_bg">
+            <TextView
+                android:id="@+id/tv_rebate_price_textsearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/deep_white_color"
+                android:textSize="10sp"/>
+        </RelativeLayout>
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="11dp"
+                    android:layout_marginRight="@dimen/x20"
                     android:text="好评率98%"
                     android:textColor="#333333"
                     android:textSize="13sp"/>
@@ -54,13 +105,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
+                android:layout_marginRight="@dimen/x20"
                 android:orientation="horizontal"
-                android:paddingRight="11dp">
+                >
                 <TextView
                     android:id="@+id/price_tv_min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sdfdfdfdsssssssssssssssssssssssssssssf"
+                    android:text="大鱼优品......."
                     android:lines="2"
                     android:ellipsize="end"
                     android:textColor="#333333"
@@ -71,23 +123,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp">
                 <TextView
                     android:id="@+id/prices"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥59.00"
+                    android:text="¥0.00"
                     android:textColor="#FD6363"
                     android:textSize="15sp"/>
                 <TextView
-                    android:id="@+id/price_taobao"
+                    android:id="@+id/price_single"
                     android:layout_width="62dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="6dp"
-                    android:background="@drawable/tab_fragment_gray"
+                    android:background="@drawable/bg_text_search"
                     android:gravity="center"
-                    android:text="¥0.00"
+                    android:text="¥100.00/L"
                     android:textColor="#666666"
                     android:textSize="11sp"
                     android:layout_centerVertical="true"
@@ -99,7 +153,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="40dp"
-                    android:layout_marginRight="11dp"
+                    android:layout_marginRight="@dimen/x20"
                     android:text="销量20.3万"
                     android:textColor="#666666"
                     android:textSize="12sp"/>

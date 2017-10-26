@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 	>
-
+<android.support.v4.widget.NestedScrollView
+		android:id="@+id/scroll1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		>
 	<RelativeLayout
 			android:layout_width="match_parent"
+			android:background="#fff"
 			android:layout_height="match_parent">
 
 		<LinearLayout
@@ -21,7 +27,6 @@
 					android:layout_height="wrap_content"
 					android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
 					app:elevation="0dp">
-
 				<RelativeLayout
 						android:layout_width="match_parent"
 						android:layout_height="300dp"
@@ -33,63 +38,94 @@
 							android:layout_height="300dp"
 							android:orientation="horizontal" />
 
-					<LinearLayout
+					<RelativeLayout
 							android:layout_width="fill_parent"
 							android:layout_height="30dp"
 							android:layout_alignParentBottom="true"
-							android:gravity="center"
 							android:orientation="horizontal">
+						<LinearLayout
+								android:visibility="gone"
+								android:layout_centerVertical="true"
+								android:layout_gravity="center_vertical"
+								android:id="@+id/ll_ware_item_amount"
+								android:layout_width="wrap_content"
+								android:layout_height="30dp"
+								android:layout_alignParentBottom="true"
+								android:layout_alignParentLeft="true"
+								android:layout_marginBottom="2dp"
+								android:layout_marginLeft="4dp"
+								android:background="@drawable/bg_ware_fanli"
+								android:orientation="horizontal"
+								>
+							<ImageView
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:layout_gravity="center_vertical"
+									android:src="@mipmap/ware_fanli"/>
+							<TextView
+									android:id="@+id/tv_amount_price"
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:layout_gravity="center_vertical"
+									android:text="9.9999999"
+									android:textColor="@color/deep_white_color"
+									android:textSize="12sp"/>
 
+						</LinearLayout>
+						<RelativeLayout
+								android:visibility="gone"
+								android:id="@+id/ll_ware_item_textsearch"
+								android:layout_width="wrap_content"
+								android:layout_height="30dp"
+								android:layout_alignParentBottom="true"
+								android:layout_alignParentLeft="true"
+								android:layout_marginBottom="2dp"
+								android:layout_marginLeft="4dp"
+								android:background="@drawable/coupons_bottom_bg">
+							<TextView
+									android:id="@+id/tv_rebate_price_textsearch"
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:layout_centerVertical="true"
+									android:textColor="@color/deep_white_color"
+									android:textSize="10sp"/>
+						</RelativeLayout>
 						<!-- 放置图片中选中点的位置 -->
 						<LinearLayout
+								android:layout_centerInParent="true"
+								android:layout_gravity="center"
 								android:id="@+id/dots_ll"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:layout_marginRight="5dp"
 								android:orientation="horizontal" />
-					</LinearLayout>
-
-					<ImageView
-							android:id="@+id/detail_back"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginLeft="15dp"
-							android:layout_marginTop="10dp"
-							android:src="@drawable/detail_back" />
+					</RelativeLayout>
 				</RelativeLayout>
 			</android.support.design.widget.AppBarLayout>
 
 			<LinearLayout
+					android:background="#fff"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
-					android:padding="5dp">
-
-				<TextView
-						android:id="@+id/comment"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_vertical"
-						android:layout_marginLeft="15dp"
-						android:text="推荐商家[1号店]"
-						android:textColor="#FD6363"
-						android:textSize="13sp" />
-
+					>
 				<TextView
 						android:id="@+id/comment_simple"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_vertical"
-						android:layout_marginLeft="15dp"
+						android:layout_marginLeft="7dp"
 						android:layout_marginRight="12dp"
-						android:lines="1"
+						android:lines="2"
+						android:paddingLeft="5dp"
 						android:ellipsize="end"
 						android:text="dfafjkaljfkadjfakdfjkadjfkadjfkadjfkadjk"
 						android:textColor="#333333"
 						android:textSize="13sp" />
 			</LinearLayout>
 
-			<LinearLayout
+			<RelativeLayout
+					android:background="#fff"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="20dp"
@@ -103,19 +139,22 @@
 						android:id="@+id/comment_min"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginLeft="15dp"
+						android:layout_marginLeft="7dp"
 						android:text="最低价"
+						android:layout_centerVertical="true"
 						android:textColor="#666666"
 						android:textSize="13sp" />
 
 				<TextView
+						android:layout_toRightOf="@id/comment_min"
 						android:layout_gravity="center_vertical"
 						android:id="@+id/comment_simple_price"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginLeft="15dp"
+						android:layout_marginLeft="10dp"
 						android:text="¥0.00"
 						android:textColor="#FD6363"
+						android:layout_centerVertical="true"
 						android:textSize="17sp" />
 
 				<TextView
@@ -123,9 +162,11 @@
 						android:id="@+id/comment_simple_prices"
 						android:layout_width="71dp"
 						android:layout_height="19dp"
+						android:layout_toRightOf="@id/comment_simple_price"
 						android:layout_marginLeft="6dp"
+						android:layout_centerVertical="true"
 						android:layout_marginRight="12dp"
-						android:background="@drawable/tab_fragment_gray"
+						android:background="@drawable/bg_text_search"
 						android:gravity="center"
 						android:text="0.00/ml"
 						android:textColor="#333333"
@@ -135,13 +176,14 @@
 						android:id="@+id/look"
 						android:layout_width="81dp"
 						android:layout_height="28dp"
-						android:layout_marginLeft="50dp"
+						android:layout_alignParentRight="true"
 						android:background="@drawable/select_text"
 						android:gravity="center"
+						android:layout_marginRight="@dimen/x20"
 						android:text="去查看"
 						android:textColor="#ffffff"
 						android:textSize="15sp" />
-			</LinearLayout>
+			</RelativeLayout>
 
 			<View
 					android:layout_width="match_parent"
@@ -153,7 +195,7 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:paddingBottom="13dp"
-					android:paddingLeft="7dp"
+					android:background="#fff"
 					android:paddingTop="13dp">
 
 				<LinearLayout
@@ -404,16 +446,17 @@
 					android:layout_height="10dp"
 					android:background="#33999999" />
 
-			<RelativeLayout
+			<LinearLayout
 					android:layout_width="match_parent"
+					android:descendantFocusability="blocksDescendants"
 					android:layout_height="273dp">
 
 				<WebView
 						android:layout_centerInParent="true"
 						android:id="@+id/webview"
 						android:layout_width="match_parent"
-						android:layout_height="match_parent"></WebView>
-			</RelativeLayout>
+						android:layout_height="match_parent"/>
+			</LinearLayout>
 
 			<View
 					android:layout_width="match_parent"
@@ -426,6 +469,7 @@
 					android:layout_height="wrap_content">
 
 				<LinearLayout
+						android:background="#fff"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:orientation="vertical">
@@ -436,7 +480,8 @@
 							android:layout_height="match_parent" />
 
 					<TextView
-							android:id="@+id/more"
+							android:visibility="gone"
+							android:id="@+id/click_more"
 							android:layout_width="match_parent"
 							android:layout_height="30dp"
 							android:layout_gravity="center_horizontal"
@@ -458,6 +503,7 @@
 					android:layout_height="match_parent">
 
 				<LinearLayout
+						android:background="#fff"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:orientation="vertical">
@@ -476,7 +522,6 @@
 				</LinearLayout>
 			</ScrollView>
 		</LinearLayout>
-
 		<RelativeLayout
 				android:id="@+id/rl_net_states"
 				android:layout_width="match_parent"
@@ -513,4 +558,34 @@
 					android:background="@mipmap/net_state_go" />
 		</RelativeLayout>
 	</RelativeLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
+	<RelativeLayout
+			android:id="@+id/ll_good_detail"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="@color/transparent"
+			>
+		<TextView
+				android:id="@+id/ware_toolbar_back"
+				android:layout_width="34dp"
+				android:layout_height="34dp"
+				android:layout_alignParentLeft="true"
+				android:layout_centerVertical="true"
+				android:layout_marginLeft="20dp"
+				android:background="@drawable/detail_back"/>
+		<TextView
+				android:id="@+id/tv_good_detail_title_good"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:text="商品详情"
+				android:textColor="@color/transparent"/>
+		<View
+				android:id="@+id/view_line"
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/x1"
+				android:layout_alignParentBottom="true"
+				android:background="@color/deep_9_color"
+				android:visibility="gone"/>
+	</RelativeLayout>
+</RelativeLayout>

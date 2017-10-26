@@ -20,12 +20,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.alibaba.fastjson.JSON;
+import com.deepbaytech.deeplibrary.utils.InternetUtils;
 import com.example.lwd18.pictureselecotor.ApiConstants;
 import com.example.lwd18.pictureselecotor.BaseFragment;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
-import com.example.lwd18.pictureselecotor.textsearch.Eventutil.EventUtil;
-import com.example.lwd18.pictureselecotor.textsearch.adapter.FilterAdapter;
+import com.example.lwd18.pictureselecotor.textsearch.resultadapter.FilterAdapter;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import de.greenrobot.event.EventBus;
@@ -33,13 +33,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import okhttp3.Call;
+
 /**
  * 创建者     李文东
  * 创建时间   2017/6/19 11:09
- * 描述	      ${TODO}
+ * 描述
  * 更新者     $Author$
  * 更新时间   $Date$
- * 更新描述   ${TODO}
+ * 更新描述
  */
 
 public class FilterFragment extends BaseFragment {
@@ -64,6 +65,7 @@ public class FilterFragment extends BaseFragment {
   private int position = 1;
   private List<TextsSearchEntity.DataBean.ItemsBean> newlist;
   private Handler mHandler = new Handler();
+  private DStateLayout stateLayout;
   boolean isNetCollect = true;
   private FilterAdapter adapter;
   private TextsSearchEntity textSearch;
@@ -189,6 +191,39 @@ public class FilterFragment extends BaseFragment {
         startActivity(wifiSettingsIntent);
       }
     });
+    initStatu();
+  }
+  /**
+   * 网络状态
+   */
+  private void initStatu() {
+    stateLayout = DStateLayout.wrap(mSrProductDetail);
+    stateLayout.setRetryListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        //initData(productId);
+        getData(1);
+      }
+    });
+    stateLayout.showLoading();
+
+    isNetCollect = inspectNet();
+    if (!isNetCollect) {
+      rlNetStates.setVisibility(View.VISIBLE);
+    } else {
+      rlNetStates.setVisibility(View.GONE);
+    }
+  }
+
+  @Override public void onNetChange(int netMobile) {
+    super.onNetChange(netMobile);
+    //网络状态变化时的操作
+    if (netMobile == InternetUtils.NETWORK_NONE) {
+      rlNetStates.setVisibility(View.VISIBLE);
+      isNetCollect = false;
+    } else {
+      rlNetStates.setVisibility(View.GONE);
+      isNetCollect = true;
+    }
   }
 
   private void getData(int index) {
@@ -203,17 +238,22 @@ public class FilterFragment extends BaseFragment {
         .execute(new StringCallback() {
 
           @Override public void onError(Call call, Exception e, int id) {
-
+            if (isNetCollect) {
+              stateLayout.setEmptyImage(R.mipmap.wenzisousuo_v2_2x);
+              stateLayout.setEmptyText("抱歉,没有找到相关商品请试试其他搜索词");
+              stateLayout.showEmpty();
+            } else {
+              stateLayout.showError();
+            }
           }
 
           @Override public void onResponse(String response, int id) {
-            Log.w("刚获取数据时", response);
             textSearch = JSON.parseObject(response, TextsSearchEntity.class);
-            System.out.println("TextSearchResponse====="+response);
             //记录总页数
             if (textSearch.getState() == 0) {
               sumpageid.clear();
               sumpageid.add(textSearch.getData().getPageTotal());
+              stateLayout.showContent();
               rlNetStates.setVisibility(View.GONE);
               list.clear();
               newlist.clear();
@@ -226,7 +266,6 @@ public class FilterFragment extends BaseFragment {
                 filterlist.addAll(textSearch.getData().getFilters());
                 newfilterlist.addAll(filterlist);
               }
-              System.out.println("position====" + position);
               if (position == 1) {
                 adapter.addItem(newlist);
                 adapter.addFilterItem(newfilterlist);
@@ -234,9 +273,11 @@ public class FilterFragment extends BaseFragment {
                 adapter.addMoreItem(newlist);
               }
             } else if (textSearch.getState() == 3) {
-
+              stateLayout.setEmptyImage(R.mipmap.wenzisousuo_v2_2x);
+              stateLayout.setEmptyText("抱歉,没有找到相关商品请试试其他搜索词");
+              stateLayout.showEmpty();
             } else {
-
+              stateLayout.showError();
             }
           }
         });

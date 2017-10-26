@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
+import com.example.lwd18.pictureselecotor.textsearch.DataPresenter;
+import com.example.lwd18.pictureselecotor.textsearch.itemadapter.GoodSAttrRvFAdapter;
+import com.example.lwd18.pictureselecotor.textsearch.itemadapter.GoodSAttrRvNAdapter;
 import com.example.lwd18.pictureselecotor.textsearch.itemadapter.GoodSAttrRvNAdapter1;
 import com.example.lwd18.pictureselecotor.textsearch.itemadapter.GoodSAttrRvNAdapter10;
 import com.example.lwd18.pictureselecotor.textsearch.itemadapter.GoodSAttrRvNAdapter11;
@@ -29,10 +32,10 @@ import java.util.List;
 /**
  * 创建者     李文东
  * 创建时间   2017/7/10 12:41
- * 描述	      ${TODO}
+ * 描述
  * 更新者     $Author$
  * 更新时间   $Date$
- * 更新描述   ${TODO}
+ * 更新描述
  */
 
 public class GoodSAttrRvAdatper extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -58,15 +61,31 @@ public class GoodSAttrRvAdatper extends RecyclerView.Adapter<RecyclerView.ViewHo
   private GoodSAttrRvNAdapter10 normalAdapter10;
   private GoodSAttrRvNAdapter11 normalAdapter11;
   private GoodSAttrRvNAdapter12 normalAdapter12;
+
   public GoodSAttrRvAdatper(Context context) {
     this.context = context;
     data = new ArrayList<>();
+    if (DataPresenter.getSingleTon().getData().size()>0){
+      data.clear();
+      DataPresenter.getSingleTon().getData().addAll(data);
+      data.removeAll(data);
+      data.addAll(DataPresenter.getSingleTon().getData());
+      for (int i = 0; i < data.size(); i++) {
+        for (int j = 0; j < data.get(i).getFilterOption().size(); j++) {
+          data.get(i).setChick(false);
+        }
+      }
+      //清空被选中的集合
+      DataPresenter.getSingleTon().getSelectList().clear();
+      notifyDataSetChanged();
+    }
   }
 
   @Override public int getItemViewType(int position) {
-    if (position == 0) {
+    //暂时不要商城和价格区间,so将头部和尾部动态注销
+    if (position == -1) {
       return HEAD;
-    } else if (position == data.size() + 1) {
+    } else if (position == data.size()) {
       return Foot;
     } else {
       return Normal;
@@ -95,292 +114,326 @@ public class GoodSAttrRvAdatper extends RecyclerView.Adapter<RecyclerView.ViewHo
     // TODO: 2017/7/23 recycleview嵌套recycleview,由于每一个item都是一个recycleview,因此都有各自对应的adapte,如果设置一个adapter,每次数据变化时会有一系列的冲突
     // TODO: 2017/7/23 目前尚未找到更好的解决办法,因此只能使用最笨的办法以求稳定,索幸所选条目最多不会超过20条,因此此方法只能在group数量有限的情况下使用
     if (holder instanceof NormalViewHolder) {
-      if (position==1){
+      if (position==0){
+        //第一条全部展开
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
         if (normalAdapter==null) {
           normalAdapter = new GoodSAttrRvNAdapter(context);
           ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter);
-            normalAdapter.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+            //normalAdapter.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          normalAdapter.notifyDataSetChanged(true, data.get(position).getFilterOption(),position);
+          ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
+          //if (data.get(position).isChick()) {
+          //  ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
+          //} else {
+          //  ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
+          //  data.get(position).setChick(true);
+          //}
+        }else {
+          //normalAdapter.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          normalAdapter.notifyDataSetChanged(true, data.get(position).getFilterOption(),position);
+        }
+        ////点击将
+        //((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
+        //  @Override public void onClick(View v) {
+        //    System.out.println("被点击的position==="+position);
+        //    if (data.get(position).isChick()) {
+        //      ((ImageView) v).setImageResource(R.drawable.sort_common_up);
+        //    } else {
+        //      ((ImageView) v).setImageResource(R.drawable.sort_common_down);
+        //    }
+        //      normalAdapter.notifyDataSetChanged(data.get(position).isChick(), data.get(position ).getFilterOption(),position);
+        //    data.get(position).setChick(!data.get(position).isChick());
+        //  }
+        //});
+      }else if (position==1){
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
+        ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter1==null) {
+          normalAdapter1 = new GoodSAttrRvNAdapter1(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter1);
+          normalAdapter1.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter1.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-              normalAdapter.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter1.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==2){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter1==null) {
-          normalAdapter1 = new GoodSAttrRvNAdapter1(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter1);
-          normalAdapter1.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter2==null) {
+          normalAdapter2 = new GoodSAttrRvNAdapter2(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter2);
+          normalAdapter2.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter1.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter2.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter1.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter2.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==3){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter2==null) {
-          normalAdapter2 = new GoodSAttrRvNAdapter2(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter2);
-          normalAdapter2.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter3==null) {
+          normalAdapter3 = new GoodSAttrRvNAdapter3(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter3);
+          normalAdapter3.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter2.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter3.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter2.notifyDataSetChanged(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter3.notifyDataSetChanged(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==4){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter3==null) {
-          normalAdapter3 = new GoodSAttrRvNAdapter3(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter3);
-          normalAdapter3.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter4==null) {
+          normalAdapter4 = new GoodSAttrRvNAdapter4(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter4);
+          normalAdapter4.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter3.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter4.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter3.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter4.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==5){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter4==null) {
-          normalAdapter4 = new GoodSAttrRvNAdapter4(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter4);
-          normalAdapter4.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter5==null) {
+          normalAdapter5 = new GoodSAttrRvNAdapter5(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter5);
+          normalAdapter5.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter4.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter5.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter4.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter5.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==6){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter5==null) {
-          normalAdapter5 = new GoodSAttrRvNAdapter5(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter5);
-          normalAdapter5.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter6==null) {
+          normalAdapter6 = new GoodSAttrRvNAdapter6(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter6);
+          normalAdapter6.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter5.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter6.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter5.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter6.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==7){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter6==null) {
-          normalAdapter6 = new GoodSAttrRvNAdapter6(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter6);
-          normalAdapter6.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter7==null) {
+          normalAdapter7 = new GoodSAttrRvNAdapter7(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter7);
+          normalAdapter7.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter6.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter7.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter6.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter7.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==8){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter7==null) {
-          normalAdapter7 = new GoodSAttrRvNAdapter7(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter7);
-          normalAdapter7.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter8==null) {
+          normalAdapter8 = new GoodSAttrRvNAdapter8(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter8);
+          normalAdapter8.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter7.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter8.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter7.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter8.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==9){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter8==null) {
-          normalAdapter8 = new GoodSAttrRvNAdapter8(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter8);
-          normalAdapter8.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter9==null) {
+          normalAdapter9 = new GoodSAttrRvNAdapter9(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter9);
+          normalAdapter9.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter8.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter9.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter8.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter4.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==10){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter9==null) {
-          normalAdapter9 = new GoodSAttrRvNAdapter9(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter9);
-          normalAdapter9.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter10==null) {
+          normalAdapter10 = new GoodSAttrRvNAdapter10(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter10);
+          normalAdapter10.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter9.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter10.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
@@ -391,98 +444,68 @@ public class GoodSAttrRvAdatper extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter4.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter10.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==11){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter10==null) {
-          normalAdapter10 = new GoodSAttrRvNAdapter10(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter10);
-          normalAdapter10.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
+        if (normalAdapter11==null) {
+          normalAdapter11 = new GoodSAttrRvNAdapter11(context);
+          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter11);
+          normalAdapter11.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter10.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter11.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter10.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter11.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }else if (position==12){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
         ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
-        if (normalAdapter11==null) {
-          normalAdapter11 = new GoodSAttrRvNAdapter11(context);
-          ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter11);
-          normalAdapter11.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
-            ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
-          } else {
-            ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
-          }
-        }else {
-          normalAdapter11.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-        }
-        //点击将
-        ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
-          @Override public void onClick(View v) {
-            System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
-              ((ImageView) v).setImageResource(R.drawable.sort_common_up);
-            } else {
-              ((ImageView) v).setImageResource(R.drawable.sort_common_down);
-            }
-            normalAdapter11.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
-          }
-        });
-      }else if (position==13){
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 3, LinearLayoutManager.VERTICAL, false);
-        ((NormalViewHolder) holder).Rv.setLayoutManager(gridLayoutManager);
-        ((NormalViewHolder) holder).name.setText(data.get(position - 1).getFilterName());
+        ((NormalViewHolder) holder).name.setText(data.get(position).getFilterName());
         if (normalAdapter12==null) {
           normalAdapter12 = new GoodSAttrRvNAdapter12(context);
           ((NormalViewHolder) holder).Rv.setAdapter(normalAdapter12);
-          normalAdapter12.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-          if (data.get(position - 1).isChick()) {
+          normalAdapter12.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+          if (data.get(position).isChick()) {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_up);
           } else {
             ((NormalViewHolder) holder).img.setImageResource(R.drawable.sort_common_down);
-            data.get(position - 1).setChick(true);
+            data.get(position).setChick(true);
           }
         }else {
-          normalAdapter12.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
+          normalAdapter12.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
         }
         //点击将
         ((NormalViewHolder) holder).img.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             System.out.println("被点击的position==="+position);
-            if (data.get(position - 1).isChick()) {
+            if (data.get(position).isChick()) {
               ((ImageView) v).setImageResource(R.drawable.sort_common_up);
             } else {
               ((ImageView) v).setImageResource(R.drawable.sort_common_down);
             }
-            normalAdapter12.notifyDataSetChangeds(data.get(position - 1).isChick(), data.get(position - 1).getFilterOption(),position-1);
-            data.get(position - 1).setChick(!data.get(position - 1).isChick());
+            normalAdapter12.notifyDataSetChangeds(data.get(position).isChick(), data.get(position).getFilterOption(),position);
+            data.get(position).setChick(!data.get(position).isChick());
           }
         });
       }
@@ -514,7 +537,8 @@ public class GoodSAttrRvAdatper extends RecyclerView.Adapter<RecyclerView.ViewHo
   }
 
   @Override public int getItemCount() {
-    return data.size() == 0 ? 2 : data.size() + 2;
+    //return data.size() == 0 ? 2 : data.size() + 2;
+    return data.size()==0?0:data.size();
   }
 
   /**

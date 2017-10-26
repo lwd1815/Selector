@@ -9,9 +9,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -21,13 +20,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.alibaba.fastjson.JSON;
+import com.deepbaytech.deeplibrary.utils.InternetUtils;
+import com.ethereal.deepstatelayout.DStateLayout;
 import com.example.lwd18.pictureselecotor.ApiConstants;
 import com.example.lwd18.pictureselecotor.BaseFragment;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
+import com.example.lwd18.pictureselecotor.textsearch.DataPresenter;
 import com.example.lwd18.pictureselecotor.textsearch.Eventutil.SecondEventil;
-import com.example.lwd18.pictureselecotor.textsearch.adapter.ComprehensiveAdapter;
-import com.example.lwd18.pictureselecotor.textsearch.utils.TextEventUtil;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.TextEventUtil;
+import com.example.lwd18.pictureselecotor.textsearch.resultadapter.ComprehensiveAdapter;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import de.greenrobot.event.EventBus;
@@ -36,13 +38,15 @@ import java.util.List;
 import java.util.Vector;
 import okhttp3.Call;
 
+
+
 /**
  * 创建者     李文东
  * 创建时间   2017/6/19 11:09
- * 描述	      ${TODO}
+ * 描述
  * 更新者     $Author$
  * 更新时间   $Date$
- * 更新描述   ${TODO}
+ * 更新描述
  */
 
 public class ComprehensiveFragment extends BaseFragment {
@@ -52,7 +56,6 @@ public class ComprehensiveFragment extends BaseFragment {
   @BindView(R.id.sr_product_detail) SwipeRefreshLayout mSrProductDetail;
   @BindView(R.id.te_no_product_detail) TextView mTeNoProductDetail;
   @BindView(R.id.No_re_product_detail) RelativeLayout mNoReProductDetail;
-  //@BindView(R.id.tv_net_state_wifi) TextView tvNetStateWifi;
   @BindView(R.id.rl_net_states) RelativeLayout rlNetStates;
   Unbinder unbinder;
   private String mExittext;
@@ -68,7 +71,7 @@ public class ComprehensiveFragment extends BaseFragment {
   private int position = 1;
   private List<TextsSearchEntity.DataBean.ItemsBean> newlist;
   private Handler mHandler = new Handler();
-
+  private DStateLayout stateLayout;
   boolean isNetCollect = true;
   private ComprehensiveAdapter adapter;
   private TextsSearchEntity textSearch;
@@ -76,7 +79,7 @@ public class ComprehensiveFragment extends BaseFragment {
   private List<TextsSearchEntity.DataBean.FiltersBean> filterlist;
   private List<TextsSearchEntity.DataBean.FiltersBean> newfilterlist;
   private String msg = "";
-
+  private int y=0;
   public static ComprehensiveFragment newInstance(String text) {
     Bundle args = new Bundle();
     args.putString("searchKey", text);
@@ -116,35 +119,13 @@ public class ComprehensiveFragment extends BaseFragment {
     filterlist.clear();
     newfilterlist.clear();
     //用来记录currentpage
-    mSrProductDetail.setProgressBackgroundColorSchemeResource(android.R.color.white);
-    mSrProductDetail.setColorSchemeResources(android.R.color.holo_blue_light,
-        android.R.color.holo_red_light, android.R.color.holo_orange_light,
-        android.R.color.holo_green_light);
-    mSrProductDetail.setProgressViewOffset(false, 0,
-        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24,
-            getResources().getDisplayMetrics()));
     mLinearLayoutManager = new LinearLayoutManager(getContext());
     mLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
     mRvProductDetail.setLayoutManager(mLinearLayoutManager);
     //添加分隔线
-    //mUtc.addItemDecoration(new AdvanceDecoration(getContext(), OrientationHelper.VERTICAL));
+    mSrProductDetail.setEnabled(false);
     adapter = new ComprehensiveAdapter();
     mRvProductDetail.setAdapter(adapter);
-    mSrProductDetail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
-          @Override public void run() {
-            filterlist.clear();
-            newfilterlist.clear();
-            getData(1, msg);
-            mSrProductDetail.setRefreshing(false);//刷新完毕!
-            isloading = false;
-            currentPage = 1;
-            position = 1;
-          }
-        }, 500);
-      }
-    });
     mRvProductDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
@@ -153,8 +134,6 @@ public class ComprehensiveFragment extends BaseFragment {
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
         int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
-        Log.v("lastVisibleItemPosition", lastVisibleItemPosition + "");
-        Log.v("mAdapter.getItemCount()", adapter.getItemCount() + "");
 
         if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
           boolean isRefreshing = mSrProductDetail.isRefreshing();
@@ -162,15 +141,11 @@ public class ComprehensiveFragment extends BaseFragment {
             adapter.notifyItemRemoved(adapter.getItemCount());
             return;
           }
-          Log.v("isloading", isloading + "");
+
           if (isloading) {
-            //Toast.makeText(getContext(), "没有更多数据了", Toast.LENGTH_SHORT).show();
           }
           //搜索之后,关键字为空时,上拉加载
-          System.out.println("isloadiong====" + isloading);
           if (!isloading) {
-            Log.v("isloading2", isloading + "");
-            Log.v("sumpageid", sumpageid.get(0) + "");
             isloading = true;
             currentPage++;
 
@@ -181,8 +156,6 @@ public class ComprehensiveFragment extends BaseFragment {
             mHandler.postDelayed(new Runnable() {
               @Override public void run() {
                 getData(currentPage, msg);
-                System.out.println("current111==" + currentPage);
-                Log.v("currentpag++", currentPage + "");
                 isloading = false;
                 position = 2;
               }
@@ -197,35 +170,69 @@ public class ComprehensiveFragment extends BaseFragment {
         startActivity(wifiSettingsIntent);
       }
     });
+    initStatu();
+  }
 
+  /**
+   * 网络状态
+   */
+  private void initStatu() {
+    stateLayout = DStateLayout.wrap(mSrProductDetail);
+    stateLayout.setRetryListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        getData(1, msg);
+      }
+    });
+    stateLayout.showLoading();
+
+    isNetCollect = inspectNet();
+    if (!isNetCollect) {
+      rlNetStates.setVisibility(View.VISIBLE);
+    } else {
+      rlNetStates.setVisibility(View.GONE);
+    }
+  }
+
+  @Override public void onNetChange(int netMobile) {
+    super.onNetChange(netMobile);
+    //网络状态变化时的操作
+    if (netMobile == InternetUtils.NETWORK_NONE) {
+      rlNetStates.setVisibility(View.VISIBLE);
+      isNetCollect = false;
+    } else {
+      rlNetStates.setVisibility(View.GONE);
+      isNetCollect = true;
+    }
   }
 
 
-  private void getData(int index, String msg) {
-    Log.w(TAG, "开始重新请求数据");
+  private void getData(int index, final String msg) {
     OkHttpUtils.get()
         .url(ApiConstants.TEXTSEARCHS)
         .addParams("text", mExittext)
         .addParams("pageId", index + "")
         .addParams("sortId", 0 + "")
         .addParams("params", msg)
-        //.addParams("params","德国#全脂#进口")
         .build()
         .execute(new StringCallback() {
 
           @Override public void onError(Call call, Exception e, int id) {
-
+            if (isNetCollect) {
+              stateLayout.setEmptyImage(R.mipmap.wenzisousuo_v2_2x);
+              stateLayout.setEmptyText("抱歉,  没有找到相关商品请试试其他搜索词");
+              stateLayout.showEmpty();
+            } else {
+              stateLayout.showError();
+            }
           }
 
           @Override public void onResponse(String response, int id) {
-            Log.w("刚获取数据时", response);
             textSearch = JSON.parseObject(response, TextsSearchEntity.class);
-            System.out.println("TextSearchResponse=====" + response);
             //记录总页数
             if (textSearch.getData() != null && textSearch.getState() == 0) {
               sumpageid.clear();
               sumpageid.add(textSearch.getData().getPageTotal());
-
+              stateLayout.showContent();
               if (rlNetStates != null) {
                 rlNetStates.setVisibility(View.GONE);
               }
@@ -240,23 +247,57 @@ public class ComprehensiveFragment extends BaseFragment {
                 filterlist.addAll(textSearch.getData().getFilters());
                 newfilterlist.addAll(filterlist);
                 adapter.addFilterItem(newfilterlist);
+                DataPresenter.getSingleTon().saveData(newfilterlist);
               }else {
-                adapter.notifyDataSetChanged();
+
               }
-              System.out.println("position====" + position);
               if (position == 1) {
-                adapter.addItem(newlist);
-                adapter.notifyDataSetChanged();
-                System.out.println("newfilterlist===================="+newfilterlist.size());
+               adapter.addItem(newlist);
               } else {
-                adapter.addMoreItem(newlist);
+               adapter.addMoreItem(newlist);
               }
+              DataPresenter.getSingleTon().saveSearch(newlist);
             } else if (textSearch.getState() == 3) {
               // TODO: 2017/8/8 如果没有查询到数据,以前数据不变.如果有数据,累加(感觉有问题,既是筛选就应该搜什么就显示什么,不应该累加)
-              Toast.makeText(getContext(), "查无数据", Toast.LENGTH_SHORT).show();
-              adapter.notifyDataSetChanged();
+              if (DataPresenter.getSingleTon().getSearchlist().size()>0) {
+                adapter.addItem(DataPresenter.getSingleTon().getSearchlist());
+              }else {
+                stateLayout.setEmptyImage(R.mipmap.wenzisousuo_v2_2x);
+                stateLayout.setEmptyText("抱歉,  没有找到相关商品请试试其他搜索词");
+                stateLayout.showEmpty();
+              }
+              Toast.makeText(getMContext(), "很抱歉!没有找到相关商品,换个搜索词试试看?", Toast.LENGTH_SHORT).show();
+              stateLayout.setOnTouchListener(new View.OnTouchListener() {
+                @Override public boolean onTouch(View v, MotionEvent event) {
+                  switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                      System.out.println("按下时的坐标======"+event.getY());
+                      y= (int) event.getY();
+                      break;
+                    case MotionEvent.ACTION_UP:
+                      System.out.println("抬起时的坐标======"+event.getY());
+                      if (event.getY()-y>=100){
+                        stateLayout.showContent();
+                        mSrProductDetail.setRefreshing(true);//刷新完毕!
+                        mHandler.postDelayed(new Runnable() {
+                          @Override public void run() {
+                            position = 1;
+                            getData(1,msg);
+                            mSrProductDetail.setRefreshing(false);//刷新完毕!
+                            isloading = false;
+                            currentPage = 1;
+                          }
+                        }, 1000);
+                      }
+                      break;
+                  }
+                  return true;
+                }
+              });
             } else {
-
+              stateLayout.setEmptyImage(R.mipmap.wenzisousuo_v2_2x);
+              stateLayout.setEmptyText("抱歉,  没有找到相关商品请试试其他搜索词");
+              stateLayout.showEmpty();
             }
           }
         });
@@ -266,7 +307,8 @@ public class ComprehensiveFragment extends BaseFragment {
    * 用来接收筛选框中传递过来的消息
    */
   public void onEventMainThread(SecondEventil event) {
-    List<String> filter = event.getFilter();
+    //List<String> filter = event.getFilter();
+    List<String> filter=DataPresenter.getSingleTon().getSelectList();
     System.out.println("接收到筛选框确定后发来的消息了====" + filter.size());
     List<String> newlist = new ArrayList<>();
     newlist.clear();
@@ -275,7 +317,7 @@ public class ComprehensiveFragment extends BaseFragment {
       msg += s + "#";
       System.out.println("接收到筛选框确定后发来的消息了====" + s);
     }
-    msg = msg.substring(0, msg.length() - 1);
+    msg = msg.substring(0, msg.length()>=1? msg.length()- 1:0);
     System.out.println("接收到筛选框确定msg====" + msg);
     getData(1, msg);
     msg = "";
@@ -296,7 +338,6 @@ public class ComprehensiveFragment extends BaseFragment {
     filterlist.clear();
     newfilterlist.clear();
     getData(1, msg);
-    mSrProductDetail.setRefreshing(false);//刷新完毕!
     isloading = false;
     currentPage = 1;
     position = 1;

@@ -70,4 +70,5 @@ dependencies {
   testCompile 'junit:junit:4.12'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.2.1'
   compile files('libs/alipaySdk-20161222.jar')
+  compile project(':deepstatelayout')
 }

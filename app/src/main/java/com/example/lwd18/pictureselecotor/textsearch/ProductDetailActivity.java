@@ -3,11 +3,11 @@ package com.example.lwd18.pictureselecotor.textsearch;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,13 +28,14 @@ import com.example.lwd18.pictureselecotor.BaseFragment;
 import com.example.lwd18.pictureselecotor.NoScrollViewPager;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
-import com.example.lwd18.pictureselecotor.textsearch.adapter.ViewPagerAdapter;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.FinishEventUtil;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.SecondEventil;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.TextEventUtil;
+import com.example.lwd18.pictureselecotor.textsearch.Eventutil.TranstEventil;
 import com.example.lwd18.pictureselecotor.textsearch.fragment.ComprehensiveFragment;
 import com.example.lwd18.pictureselecotor.textsearch.fragment.PriceFragment;
 import com.example.lwd18.pictureselecotor.textsearch.fragment.SaleNumberFragment;
-import com.example.lwd18.pictureselecotor.textsearch.utils.FilterEventUtil;
-import com.example.lwd18.pictureselecotor.textsearch.utils.FinishEventUtil;
-import com.example.lwd18.pictureselecotor.textsearch.utils.TextEventUtil;
+import com.example.lwd18.pictureselecotor.textsearch.resultadapter.ViewPagerAdapter;
 import com.example.lwd18.pictureselecotor.textsearch.view.FilterFragments;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import okhttp3.Call;
 
-import static com.example.lwd18.pictureselecotor.R.color.deep_main_color;
+
 
 public class ProductDetailActivity extends BaseDeepActivity implements View.OnClickListener {
 
@@ -51,12 +52,10 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
   @BindView(R.id.ll_search_text_result) LinearLayout llSearchTextResult;
   @BindView(R.id.rl_search_text_result) RelativeLayout rlSearchTextResult;
   @BindView(R.id.tv_search_text_result_back) TextView tvSearchTextResultBack;
-
   @BindView(R.id.search_toolbar_product_detail) Toolbar searchToolbarProductDetail;
   @BindView(R.id.topic_tabLayout) TabLayout topicTabLayout;
   @BindView(R.id.textsearch_filter) TextView textsearchFilter;
   @BindView(R.id.textsearch_filter_out) RelativeLayout textsearchFilterOut;
-  @BindView(R.id.view) View view;
   @BindView(R.id.vp_topic) NoScrollViewPager vpTopic;
   @BindView(R.id.topic_zero_contain_product_detail) FrameLayout topicZeroContainProductDetail;
   @BindView(R.id.topic_zero_content_new_out) LinearLayout topicZeroContentNewOut;
@@ -66,11 +65,12 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
   private int priceSortMode = 0;
   private TextsSearchEntity textSearch;
   private List<TextsSearchEntity.DataBean.FiltersBean> filterlist;
-
   List<BaseFragment> list_fragment;
   List<String> list_table;
   private FilterFragments filterFragment;
   private String mSearchkey;
+  private ImageView img_title;
+
   @Override protected void initActivity() {
     setContentView(R.layout.activity_product_details);
     ButterKnife.bind(this);
@@ -97,24 +97,16 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
     vpTopic.setNoScroll(true);
     textsearchFilterOut.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        textsearchFilter.setTextColor(getResources().getColor(deep_main_color));
-        Drawable drawable = getResources().getDrawable(R.drawable.img_search_filter_f);
+        textsearchFilter.setTextColor(getResources().getColor(R.color.colorB3));
+        Drawable drawable = getResources().getDrawable(R.drawable.img_search_filter_n);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         textsearchFilter.setCompoundDrawables(null, null, drawable, null);
         openMenu();
       }
     });
     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-    //menuHeaderView = new RightSideslipLay(ProductDetailActivity.this);
     filterFragment = new FilterFragments(ProductDetailActivity.this,mSearchkey);
     navView.addView(filterFragment);
-
-    //menuHeaderView.setCloseMenuCallBack(new RightSideslipLay.CloseMenuCallBack() {
-    //  @Override public void setupCloseMean() {
-    //    closeMenu();
-    //  }
-    //});
-
   }
 
   /**
@@ -141,6 +133,8 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
   }
 
   public void openMenu() {
+    //刷新筛选框中的数据
+    EventBus.getDefault().post(new TranstEventil());
     drawerLayout.openDrawer(GravityCompat.END);
   }
 
@@ -154,18 +148,16 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
         .execute(new StringCallback() {
 
           @Override public void onError(Call call, Exception e, int id) {
-
+            e.printStackTrace();
           }
 
           @Override public void onResponse(String response, int id) {
-            Log.w("刚获取数据时", response);
             textSearch = JSON.parseObject(response, TextsSearchEntity.class);
-            System.out.println("TextSearchResponse=====" + response);
             //记录总页数
             if (textSearch.getData() != null && textSearch.getState() == 0) {
               filterlist.clear();
               filterlist.addAll(textSearch.getData().getFilters());
-              EventBus.getDefault().post(new FilterEventUtil(filterlist));
+              DataPresenter.getSingleTon().saveData(filterlist);
               //保存数据
             } else if (textSearch.getState() == 3) {
 
@@ -186,11 +178,6 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
         break;
     }
   }
-
-  private int[] imageResIds = {
-      0, 0, R.drawable.search_icon_price_normal, R.mipmap.cate_filter,
-  };
-
   private void initTab() {
     list_fragment = new ArrayList<>();
     ComprehensiveFragment comprehensiveFragment = ComprehensiveFragment.newInstance(mSearchkey);
@@ -244,6 +231,8 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
         if (tab != null) {
           tab.select();
         }
+        if (img_title!=null)
+        img_title.setImageResource(R.drawable.search_icon_price_normal);
       }
     }
   };
@@ -269,7 +258,7 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
 
   private void setPriceSortDrawable(int priceSortMode, TabLayout.Tab tab) {
     View view = tab.getCustomView();
-    ImageView img_title = (ImageView) view.findViewById(R.id.title_iv);
+    img_title = (ImageView) view.findViewById(R.id.title_iv);
     switch (priceSortMode) {
       case 0:
         img_title.setImageResource(R.drawable.search_icon_price_normal);
@@ -304,17 +293,17 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
     View view = tab.getCustomView();
     ImageView img_title = (ImageView) view.findViewById(R.id.title_iv);
     TextView txt_title = (TextView) view.findViewById(R.id.title_tv);
-    txt_title.setTextColor(this.getResources().getColor(deep_main_color));
+    txt_title.setTextColor(this.getResources().getColor(R.color.deep_main_color));
     if (txt_title.getText().toString().equals("综合")) {
-      //img_title.setImageResource(R.drawable.tab_home_passed);
       vpTopic.setCurrentItem(0);
+      priceSortMode=0;
     } else if (txt_title.getText().toString().equals("销量")) {
-      //img_title.setImageResource(R.drawable.tab_mine_passed);
       vpTopic.setCurrentItem(1);
+      priceSortMode=0;
     } else if (txt_title.getText().toString().equals("价格")) {
-      //img_title.setImageResource(R.drawable.tab_info_passed);
       vpTopic.setCurrentItem(2);
-      //}
+    }else {
+      priceSortMode=0;
     }
   }
 
@@ -324,11 +313,9 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
     TextView txt_title = (TextView) view.findViewById(R.id.title_tv);
     txt_title.setTextColor(Color.BLACK);
     if (txt_title.getText().toString().equals("价格")) {
-      //img_title.setImageResource(R.drawable.tab_home_normal);
-      //} else if (txt_title.getText().toString().equals("筛选")) {
-      //  // img_title.setImageResource(R.drawable.tab_mine_normal);
+
     } else {
-      //img_title.setImageResource(R.drawable.tab_info_normal);
+
     }
   }
 
@@ -339,9 +326,7 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
 
   public void onEventMainThread(TextEventUtil event) {
     String msglog = event.getMsgs();
-    System.out.println("接收到消息了====" + msglog);
     if ("".equals(msglog)) {
-      //getData(mExittext);
       openMenu();
     }
   }
@@ -351,6 +336,37 @@ public class ProductDetailActivity extends BaseDeepActivity implements View.OnCl
    */
   public void onEventMainThread(FinishEventUtil event) {
     closeMenu();
+  }
+  /**
+   * 完成监听,筛选变化
+   */
+  public void onEventMainThread(SecondEventil event) {
+    List<String> filter = event.getFilter();
+    if (filter.size()>0){
+      textsearchFilter.setTextColor(getResources().getColor(R.color.deep_main_color));
+      Drawable drawable = getResources().getDrawable(R.drawable.img_search_filter_f);
+      drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+      textsearchFilter.setCompoundDrawables(null, null, drawable, null);
+    }else {
+      textsearchFilter.setTextColor(getResources().getColor(R.color.colorB3));
+      Drawable drawable = getResources().getDrawable(R.drawable.img_search_filter_n);
+      drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+      textsearchFilter.setCompoundDrawables(null, null, drawable, null);
+    }
+  }
+
+  @Override protected void onStop() {
+    super.onStop();
+    //清空被选中的集合
+    System.out.println("文字搜索的onstop走了");
+    DataPresenter.getSingleTon().getSelectList().clear();
+    DataPresenter.getSingleTon().getSearchlist().clear();
+  }
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    // TODO: add setContentView(...) invocation
+    ButterKnife.bind(this);
   }
 }
 

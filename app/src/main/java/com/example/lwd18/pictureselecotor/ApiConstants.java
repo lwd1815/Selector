@@ -17,4 +17,9 @@ public class ApiConstants {
   public static final String PRODUCTSEARCH="http://api.deepbaytech.com/mobile/api/v0.0.1/product-search";
 
   public static final  String POPULAR_TEXT = BASE_URI+API_VERSION+"/popular-text";
+
+  /**
+   * 商品搜索聚类相同产品接口
+   */
+  public static final String PRODUCTSAMESEARCH="http://api.deepbaytech.com/mobile/api/v0.0.1/product-same-search";
 }
