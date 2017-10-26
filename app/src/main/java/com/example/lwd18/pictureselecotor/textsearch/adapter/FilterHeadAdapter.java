@@ -19,8 +19,6 @@ import java.util.List;
  * 创建者     李文东
  * 创建时间   2017/7/12 16:53
  * 描述	      文字搜索综合界面筛选项的adapter
- * 更新者     $Author$
- * 更新时间   $Date$
  * 更新描述
  */
 

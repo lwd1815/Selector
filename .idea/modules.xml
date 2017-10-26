@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyGitSelecoor.iml" filepath="$PROJECT_DIR$/MyGitSelecoor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deeplibrary/deeplibrary.iml" filepath="$PROJECT_DIR$/deeplibrary/deeplibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deepstatelayout/deepstatelayout.iml" filepath="$PROJECT_DIR$/deepstatelayout/deepstatelayout.iml" />
+    </modules>
+  </component>
+</project>

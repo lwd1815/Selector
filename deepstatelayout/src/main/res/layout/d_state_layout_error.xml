@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:paddingBottom="30dp"
+    android:gravity="center"
+    android:orientation="vertical">
+    <ImageView
+        android:src="@mipmap/state_error"
+        android:id="@id/error_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+        android:id="@id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="26dp"
+        tools:text="无法连接网络,请检查网络并重试"
+        tools:textColor="#999999"
+        tools:textSize="15sp"/>
+
+    <TextView
+        android:id="@id/retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/d_state_layout_button"
+        android:gravity="center"
+        android:minWidth="140dp"
+        android:padding="10dp"
+        tools:text="重新连接"
+        tools:textColor="#fff"
+        tools:textSize="18sp"/>
+
+</LinearLayout>

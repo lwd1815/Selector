@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:paddingBottom="30dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:src="@mipmap/state_empty"
+        android:id="@id/empty_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+        android:layout_marginTop="40dp"
+        android:id="@id/empty_text"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        tools:textColor="#999999"
+				android:lineSpacingExtra="8dp"
+        tools:textSize="16sp"
+        tools:text="抱歉,暂无相关数据.."/>
+</LinearLayout>
