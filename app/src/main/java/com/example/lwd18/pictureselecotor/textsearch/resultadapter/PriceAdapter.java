@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
+import com.example.lwd18.pictureselecotor.productdetail.GoodsDetailActivity;
 import com.example.lwd18.pictureselecotor.textsearch.DataPresenter;
 import com.example.lwd18.pictureselecotor.textsearch.Eventutil.FilterUtils;
 import com.example.lwd18.pictureselecotor.textsearch.adapter.FilterHeadAdapter;
@@ -113,9 +114,9 @@ public class PriceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         wareHolder.dpout.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
-            context.startActivity(
-                new Intent(context, WareActivity.class).putExtra("productId", ware.getPfromId())
-                    .putExtra("productType", 2));
+            //context.startActivity(
+            //    new Intent(context, WareActivity.class).putExtra("productId", ware.getPfromId())
+            //        .putExtra("productType", 2));
           }
         });
         //聚类

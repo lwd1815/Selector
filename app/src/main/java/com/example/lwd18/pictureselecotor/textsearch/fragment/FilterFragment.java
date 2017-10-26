@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.alibaba.fastjson.JSON;
 import com.deepbaytech.deeplibrary.utils.InternetUtils;
+import com.ethereal.deepstatelayout.DStateLayout;
 import com.example.lwd18.pictureselecotor.ApiConstants;
 import com.example.lwd18.pictureselecotor.BaseFragment;
 import com.example.lwd18.pictureselecotor.R;
@@ -28,7 +29,6 @@ import com.example.lwd18.pictureselecotor.TextsSearchEntity;
 import com.example.lwd18.pictureselecotor.textsearch.resultadapter.FilterAdapter;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -87,7 +87,6 @@ public class FilterFragment extends BaseFragment {
     /**
      * 注册eventbus用来接收搜索的关键字
      */
-    EventBus.getDefault().register(this);
   }
 
   @Nullable @Override
@@ -282,19 +281,7 @@ public class FilterFragment extends BaseFragment {
           }
         });
   }
-  /**
-   * 用来接收消息
-   */
-  public void onEventMainThread(EventUtil event) {
-    System.out.println("接收到消息了====" + mExittext);
-    String msglog = event.getMsg();
-    mExittext = msglog;
-    getData(1);
-    mSrProductDetail.setRefreshing(false);//刷新完毕!
-    isloading = false;
-    currentPage = 1;
-    position = 1;
-  }
+
   @Override public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();

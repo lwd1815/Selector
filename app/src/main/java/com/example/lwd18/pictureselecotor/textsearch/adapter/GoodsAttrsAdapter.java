@@ -6,13 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import com.example.lwd18.pictureselecotor.R;
 import com.example.lwd18.pictureselecotor.TextsSearchEntity;
 import com.example.lwd18.pictureselecotor.textsearch.Eventutil.FilterUtils;
 import com.example.lwd18.pictureselecotor.textsearch.vo.SaleAttributeVo;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.networkbench.com.google.gson.internal.a.m.R;
 
 /**
  * 子属性GridView的适配器

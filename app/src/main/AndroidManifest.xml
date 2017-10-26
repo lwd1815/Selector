@@ -9,8 +9,14 @@
 			android:label="@string/app_name"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
+		<activity android:name=".textsearch.DuTextSearchActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
 
-		<activity android:name=".textsearch.productdeatil.GoodsDetailActivity"/>
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".productdetail.GoodsDetailActivity"/>
 		<activity android:name=".textsearch.ProductDetailActivity"/>
 		<activity android:name=".bigphotobrows.ImageBrowseActivity"/>
 	</application>

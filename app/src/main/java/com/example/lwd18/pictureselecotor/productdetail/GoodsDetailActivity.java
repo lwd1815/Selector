@@ -120,7 +120,7 @@ public class GoodsDetailActivity extends BaseDeepActivity
     newlist = new ArrayList<>();
     scroll1.setOnScrollChangeListener(GoodsDetailActivity.this);
     initFirstRv();
-    initSecondRv();
+    //initSecondRv();
     mCommentSimplePrices.setText("¥" + lv);
     initClick();
   }
@@ -395,8 +395,8 @@ public class GoodsDetailActivity extends BaseDeepActivity
 
   @Override public void onClick(View v) {
     switch (v.getId()) {
-      case R.id.more:
-        break;
+      //case R.id.more:
+      //  break;
       //淘宝
       case R.id.taobao:
         type = 0;
@@ -658,7 +658,7 @@ public class GoodsDetailActivity extends BaseDeepActivity
       @Override public void onNext(TextSearchRecomdEntity s) {
         System.out.println("response==="+s);
         if (s.getState()==0){
-          secondAdapter.addItem(s.getData().getItems());
+          //secondAdapter.addItem(s.getData().getItems());
         }
       }
     };

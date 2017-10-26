@@ -1,5 +1,6 @@
 package com.example.lwd18.pictureselecotor.textsearch.Eventutil;
 
+import com.example.lwd18.pictureselecotor.TextsSearchEntity;
 import java.util.List;
 
 /**
