@@ -1,4 +1,2 @@
 # Selector
 利用RecyclerView的嵌套实现仿京东筛选框
-
-目前recycleview的嵌套中尚存在待优化的地方
