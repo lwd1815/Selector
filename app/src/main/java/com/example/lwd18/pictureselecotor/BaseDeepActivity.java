@@ -16,7 +16,6 @@ public abstract class BaseDeepActivity extends BaseActivity {
     try {
       initActivity();
     } catch (Exception e) {
-      //Toast.makeText(BaseDeepActivity.this,e+"",Toast.LENGTH_SHORT).show();
       e.printStackTrace();
       //ActivityManager.getInstance().finishActivity();
     }
