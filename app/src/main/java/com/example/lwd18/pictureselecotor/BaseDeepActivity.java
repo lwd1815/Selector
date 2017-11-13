@@ -17,7 +17,6 @@ public abstract class BaseDeepActivity extends BaseActivity {
       initActivity();
     } catch (Exception e) {
       e.printStackTrace();
-      //ActivityManager.getInstance().finishActivity();
     }
 
   }
